@@ -1,0 +1,35 @@
+{
+  "name": "@eweilow/nyckel-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A framework agnostic library for Auth0 authentication in hybrid web apps",
+  "scripts": {
+    "build-ts": "tsc --build",
+    "publish-prerelease": "lerna publish prerelease --dist-tag latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eweilow/nyckel.git"
+  },
+  "author": "eweilow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eweilow/nyckel/issues"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ],
+    "nohoist": [
+      "**/@types/**"
+    ]
+  },
+  "homepage": "https://github.com/eweilow/nyckel#readme",
+  "devDependencies": {
+    "lerna": "3.14.1",
+    "prettier": "1.18.2",
+    "tslint": "^5.17.0",
+    "typescript": "3.5.1"
+  }
+}

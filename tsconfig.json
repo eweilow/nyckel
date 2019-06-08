@@ -1,0 +1,17 @@
+{
+  "exclude": ["**"],
+  "references": [
+    {
+      "path": "packages/nyckel/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/nyckel/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/nyckel-sessions/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/nyckel-sessions/tsconfig.esm.json"
+    }
+  ]
+}
