@@ -57,7 +57,10 @@ const verifierCache = new LRU<string, Verifier>({
 export type DecodedJWT = {
   exp: number;
   iss: string;
-  aud: string;
+  aud: string[];
+  sub?: string;
+  iat?: string;
+  scope?: string;
 };
 
 export async function verifyAndDecodeJWT(

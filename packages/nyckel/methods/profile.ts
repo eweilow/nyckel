@@ -1,5 +1,7 @@
 import { GlobalAuthenticationConfig } from "../utils/globalConfig";
 import fetch from "node-fetch";
+import { createRateLimiter } from "../utils/rateLimiter";
+import { decodeJWT } from "../jwt/decode";
 
 export type UserInfo = {
   sub: string;
@@ -25,10 +27,16 @@ function check(decoded: any, property: string, typeOf?: string) {
   }
 }
 
+const userInfoRateLimiter = createRateLimiter();
+
 export async function getUserInfo(
   accessToken: string,
   config: GlobalAuthenticationConfig
 ): Promise<UserInfo> {
+  const { sub } = decodeJWT(accessToken);
+
+  await userInfoRateLimiter.wait(sub!);
+
   const response = await fetch(config.urls.userinfo, {
     headers: {
       Authorization: `Bearer ${accessToken}`
@@ -40,22 +48,14 @@ export async function getUserInfo(
     response.headers.get("x-ratelimit-remaining")!,
     10
   );
-  const used = limit - remaining;
   const resetTime =
     parseInt(response.headers.get("x-ratelimit-reset")!, 10) * 1000;
-  const resetsIn = resetTime - Date.now();
-  const untilNextRefresh = resetsIn / used;
 
-  console.log({
-    response,
-    limit,
-    remaining,
-    used,
-    reset: Math.floor(resetTime / 1000),
-    now: Math.floor(Date.now() / 1000),
-    resetsIn: Math.floor(resetsIn / 1000),
-    untilNextRefresh: Math.floor(untilNextRefresh / 1000)
-  });
+  userInfoRateLimiter.update(sub!, limit, remaining, resetTime);
+
+  if (response.status === 429) {
+    return getUserInfo(accessToken, config);
+  }
 
   const body = await response.json();
 
@@ -69,8 +69,6 @@ export async function getUserInfo(
     emailVerified: body.email_verified,
     updatedAt: new Date(body.updated_at)
   };
-
-  console.log(user);
 
   check(user, "sub", "string");
   check(user, "name", "string");
