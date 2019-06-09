@@ -35,6 +35,28 @@ export async function getUserInfo(
     }
   });
 
+  const limit = parseInt(response.headers.get("x-ratelimit-limit")!, 10);
+  const remaining = parseInt(
+    response.headers.get("x-ratelimit-remaining")!,
+    10
+  );
+  const used = limit - remaining;
+  const resetTime =
+    parseInt(response.headers.get("x-ratelimit-reset")!, 10) * 1000;
+  const resetsIn = resetTime - Date.now();
+  const untilNextRefresh = resetsIn / used;
+
+  console.log({
+    response,
+    limit,
+    remaining,
+    used,
+    reset: Math.floor(resetTime / 1000),
+    now: Math.floor(Date.now() / 1000),
+    resetsIn: Math.floor(resetsIn / 1000),
+    untilNextRefresh: Math.floor(untilNextRefresh / 1000)
+  });
+
   const body = await response.json();
 
   const user: UserInfo = {
@@ -47,6 +69,8 @@ export async function getUserInfo(
     emailVerified: body.email_verified,
     updatedAt: new Date(body.updated_at)
   };
+
+  console.log(user);
 
   check(user, "sub", "string");
   check(user, "name", "string");

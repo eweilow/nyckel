@@ -1,20 +1,14 @@
-import { GlobalAuthenticationConfig } from "../utils/globalConfig";
-import fetch from "node-fetch";
+import { GlobalAuthenticationConfig } from "..";
 import { verifyAndDecodeJWT, DecodedJWT } from "../jwt/verify";
+import fetch from "node-fetch";
 
 type RequestTokenBody = ValidResponseTokenBody | ErrorResponseTokenBody;
 
 type ValidResponseTokenBody = {
   access_token: string;
-  refresh_token: string;
   id_token: string;
   token_type: "Bearer";
   expires_in: number;
-};
-
-type ErrorResponseTokenBody = {
-  error: string;
-  error_description: string;
 };
 
 function verifyTokenResponse(
@@ -36,25 +30,46 @@ function verifyTokenResponse(
   return true;
 }
 
-export async function requestToken(
-  code: string,
-  redirectUrl: string,
-  config: GlobalAuthenticationConfig
-) {
-  const url = new URL(config.urls.token);
-  const sendPostTo = url.href;
+export type ErrorResponseTokenBody = {
+  error: string;
+  error_description: string;
+};
 
-  const response = await fetch(sendPostTo, {
+const refreshBuffer = 60 * 1000; // a minute
+export async function attemptToRefreshToken(
+  session: {
+    refreshToken: string;
+    expires: number;
+  },
+  config: GlobalAuthenticationConfig
+): Promise<{
+  accessToken: string;
+  idToken: string;
+  expires: number;
+} | null> {
+  if (Date.now() < session.expires - refreshBuffer) {
+    return null; // token is still valid, don't refresh
+  }
+
+  const response = await fetch(config.urls.token, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
-      grant_type: "authorization_code",
+      grant_type: "refresh_token",
       client_id: config.clientId,
       client_secret: config.clientSecret,
-      code,
-      redirect_uri: redirectUrl
+      refresh_token: session.refreshToken
     })
   });
+
+  if (!response.ok) {
+    throw new Error(
+      "User info fetch resulted in: " +
+        response.status +
+        " " +
+        response.statusText
+    );
+  }
 
   const body: RequestTokenBody = await response.json();
 
@@ -88,7 +103,6 @@ export async function requestToken(
 
   const expiresUtcMilliseconds = expiresUtcSeconds * 1000;
   return {
-    refreshToken: body.refresh_token,
     accessToken: body.access_token,
     idToken: body.id_token,
     expires: expiresUtcMilliseconds

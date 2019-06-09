@@ -12,4 +12,5 @@ export {
 export { logoutUser } from "./methods/logout";
 export { authorizeUser } from "./methods/authorize";
 export { requestToken } from "./methods/token";
-export { getUserInfo } from "./methods/profile";
+export { getUserInfo, UserInfo } from "./methods/profile";
+export { attemptToRefreshToken } from "./methods/refresh";

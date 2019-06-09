@@ -8,11 +8,12 @@ import {
   verifyCSRFPair,
   logoutUser,
   concatUrl,
-  getSafeHostname
+  getSafeHostname,
+  attemptToRefreshToken
 } from "@eweilow/nyckel";
 
 import { createSessionManager } from "@eweilow/nyckel-sessions";
-import { getUserInfo } from "@eweilow/nyckel";
+import { getUserInfo, UserInfo } from "@eweilow/nyckel";
 
 require("dotenv").config();
 
@@ -52,14 +53,23 @@ declare global {
   namespace Express {
     export interface Request {
       realHost: string;
-    }
-    export interface Response {
       session: {
         delete(): Promise<any>;
         get(): Promise<any>;
         set(data: any): Promise<void>;
       };
+      user: {
+        get(): Promise<
+          | (UserInfo & {
+              accessToken: string;
+              idToken: string;
+              expiresIn: number;
+            })
+          | null
+        >;
+      };
     }
+    export interface Response {}
   }
 }
 
@@ -76,7 +86,7 @@ app.use((req, res, next) => {
   const cookieName = process.env.COOKIE_NAME!;
   const cookie = req.cookies[cookieName];
 
-  res.session = {
+  req.session = {
     async set(data) {
       let id = cookie;
       if (!sessions.isValidId(id)) {
@@ -107,19 +117,61 @@ app.use((req, res, next) => {
       }
     }
   };
+
+  req.user = {
+    async get() {
+      const id = cookie;
+      if (!sessions.isValidId(id)) {
+        return null;
+      }
+
+      let session = await req.session.get();
+      if (session == null) {
+        return null;
+      }
+
+      if (session.accessToken == null) {
+        return null;
+      }
+
+      const refreshed = await attemptToRefreshToken(session, authConfig);
+      if (refreshed != null) {
+        session = {
+          ...session,
+          ...refreshed
+        };
+        await sessions.set(id, session);
+      }
+
+      const userInfo = await getUserInfo(session.accessToken, authConfig);
+
+      return {
+        ...userInfo,
+        accessToken: session.accessToken,
+        idToken: session.idToken,
+        expiresIn: session.expires - Date.now()
+      };
+    }
+  };
   next();
 });
 
 app.get(
   "/auth/login",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
+    if (await req.user.get()) {
+      // Do nothing if user is already logged in
+      res.redirect("/");
+      return;
+    }
+
     const { csrfPair, redirectTo } = await authorizeUser(
       [],
       concatUrl(req.realHost, "/auth/callback"),
       authConfig
     );
 
-    await res.session.set({
+    await req.session.set({
       csrfSecret: csrfPair.secret
     });
 
@@ -129,7 +181,7 @@ app.get(
 
 app.get(
   "/auth/logout",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { redirectTo } = await logoutUser(
       concatUrl(req.realHost, "/auth/loggedout"),
       authConfig
@@ -141,16 +193,16 @@ app.get(
 
 app.get(
   "/auth/loggedout",
-  asyncHandler(async (req, res, next) => {
-    await res.session.delete();
+  asyncHandler(async (req, res) => {
+    await req.session.delete();
     res.redirect("/");
   })
 );
 
 app.get(
   "/auth/callback",
-  asyncHandler(async (req, res, next) => {
-    const session = await res.session.get();
+  asyncHandler(async (req, res) => {
+    const session = await req.session.get();
 
     try {
       const { csrfSecret } = session;
@@ -159,7 +211,7 @@ app.get(
         token: req.query.state
       });
     } catch (err) {
-      await res.session.delete();
+      await req.session.delete();
       throw err;
     }
 
@@ -168,7 +220,7 @@ app.get(
       concatUrl(req.realHost, "/auth/callback"),
       authConfig
     );
-    await res.session.set(data);
+    await req.session.set(data);
     res.redirect("/");
   })
 );
@@ -176,10 +228,32 @@ app.get(
 app.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const data = await res.session.get();
-    res.write("<a href='/auth/login'>log in</a>");
-    res.write("<br>");
-    res.write("<a href='/auth/logout'>log out</a>");
+    res.write("<a href='/info'>info</a><br>");
+
+    const user = await req.user.get();
+    if (user != null) {
+      res.write("<p>" + Math.floor(user.expiresIn / 1000) + "</p>");
+      res.write("<a href='/auth/logout'>log out</a>");
+      res.write("<pre>");
+      res.write(JSON.stringify(user, null, "  "));
+      res.write("</pre>");
+    } else {
+      res.write("<a href='/auth/login'>log in</a>");
+    }
+    res.end();
+  })
+);
+
+app.get(
+  "/info",
+  asyncHandler(async (req, res, next) => {
+    res.write("<a href='/'>home</a><br>");
+    const data = await req.session.get();
+    if (data.accessToken) {
+      res.write("<a href='/auth/logout'>log out</a>");
+    } else {
+      res.write("<a href='/auth/login'>log in</a>");
+    }
     if (data) {
       res.write("<pre>");
       res.write(JSON.stringify(data, null, "  "));
