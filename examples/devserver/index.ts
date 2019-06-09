@@ -139,7 +139,7 @@ app.use((req, res, next) => {
       }
 
       function isExpired(expires: number) {
-        return Date.now() > expires - 60000;
+        return Date.now() > expires - 10 * 60 * 1000; // Refreshing 10 minutes before token expires give ample time for multiple retries
       }
 
       if (isExpired(session.expires)) {
