@@ -5,6 +5,8 @@ import { encryptData, decryptData } from "./crypto/value";
 
 import uuid from "uuid/v4";
 
+import Redlock from "redlock";
+
 async function wrapInPromise<T = any>(
   run: (cb: (err: any, data: T) => void) => void
 ) {
@@ -31,6 +33,10 @@ export function createSessionManager(
     options.redisOptions
   );
 
+  const redlock = new Redlock([client], {
+    retryCount: 0
+  });
+
   return {
     isValidId(id?: string) {
       if (id == null) {
@@ -46,6 +52,27 @@ export function createSessionManager(
     },
     generateId() {
       return uuid();
+    },
+    async lock(
+      id: string,
+      ttl: number
+    ): Promise<
+      { acquired: true; release: () => Promise<void> } | { acquired: false }
+    > {
+      const key = createKeyHash(id, options.salt);
+      try {
+        const lock = await redlock.lock("locks:" + key, ttl);
+        return {
+          acquired: true,
+          async release() {
+            await lock.unlock();
+          }
+        };
+      } catch (err) {
+        return {
+          acquired: false
+        };
+      }
     },
     async set<T = any>(id: string, data: any) {
       const key = createKeyHash(id, options.salt);
