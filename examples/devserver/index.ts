@@ -79,7 +79,7 @@ app.use((req, res, next) => {
   res.session = {
     async set(data) {
       let id = cookie;
-      if (!id) {
+      if (!sessions.isValidId(id)) {
         id = sessions.generateId();
       }
       res.cookie(cookieName, id, {
@@ -90,8 +90,9 @@ app.use((req, res, next) => {
       await sessions.set(id, data);
     },
     async get() {
-      if (!!cookie) {
-        const value = await sessions.get(cookie);
+      const id = cookie;
+      if (sessions.isValidId(id)) {
+        const value = await sessions.get(id);
         if (value) {
           return value;
         }
@@ -99,8 +100,9 @@ app.use((req, res, next) => {
       return {};
     },
     async delete() {
-      if (!!cookie) {
-        await sessions.delete(cookie);
+      const id = cookie;
+      if (sessions.isValidId(id)) {
+        await sessions.delete(id);
         res.clearCookie(cookieName);
       }
     }
@@ -149,7 +151,6 @@ app.get(
   "/auth/callback",
   asyncHandler(async (req, res, next) => {
     const session = await res.session.get();
-    console.log(session);
 
     try {
       const { csrfSecret } = session;
@@ -185,6 +186,8 @@ app.get(
       res.write("</pre>");
     }
     if (data.accessToken) {
+      // TODO: Refresh the token
+      // TODO: Provider 'user' on req
       res.write(
         "<p>" + Math.floor((data.expires - Date.now()) / 1000) + "</p>"
       );

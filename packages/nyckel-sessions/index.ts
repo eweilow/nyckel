@@ -32,6 +32,18 @@ export function createSessionManager(
   );
 
   return {
+    isValidId(id?: string) {
+      if (id == null) {
+        return false;
+      }
+      if (typeof id !== "string") {
+        return false;
+      }
+      if (id.length > 36) {
+        return false;
+      }
+      return /^[a-z0-9\-]{36}$/i.test(id);
+    },
     generateId() {
       return uuid();
     },
