@@ -35,7 +35,6 @@ export type ErrorResponseTokenBody = {
   error_description: string;
 };
 
-const refreshBuffer = 60 * 1000; // a minute
 export async function attemptToRefreshToken(
   session: {
     refreshToken: string;
@@ -46,11 +45,7 @@ export async function attemptToRefreshToken(
   accessToken: string;
   idToken: string;
   expires: number;
-} | null> {
-  if (Date.now() < session.expires - refreshBuffer) {
-    return null; // token is still valid, don't refresh
-  }
-
+}> {
   const response = await fetch(config.urls.token, {
     method: "POST",
     headers: { "content-type": "application/json" },

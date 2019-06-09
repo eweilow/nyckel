@@ -27,11 +27,15 @@ const authConfig = createGlobalAuthenticationConfig(
   process.env.AUTH0_AUDIENCE!
 );
 
-const sessions = createSessionManager(process.env.REDIS_URL!, err => {}, {
-  salt: process.env.SESSION_SALT!,
-  secret: process.env.SESSION_SECRET!,
-  ttl: 7 * 24 * 60 * 60
-});
+const sessions = createSessionManager(
+  process.env.REDIS_URL!,
+  err => console.error(err),
+  {
+    salt: process.env.SESSION_SALT!,
+    secret: process.env.SESSION_SECRET!,
+    ttl: 7 * 24 * 60 * 60
+  }
+);
 
 function asyncHandler(
   handler: (
@@ -134,13 +138,24 @@ app.use((req, res, next) => {
         return null;
       }
 
-      const refreshed = await attemptToRefreshToken(session, authConfig);
-      if (refreshed != null) {
-        session = {
-          ...session,
-          ...refreshed
-        };
-        await sessions.set(id, session);
+      function isExpired(expires: number) {
+        return Date.now() > expires - 60000;
+      }
+
+      if (isExpired(session.expires)) {
+        const lock = await sessions.lock(id, 5000);
+        if (lock.acquired) {
+          try {
+            const refreshed = await attemptToRefreshToken(session, authConfig);
+            session = {
+              ...session,
+              ...refreshed
+            };
+            await sessions.set(id, session);
+          } finally {
+            await lock.release();
+          }
+        }
       }
 
       const userInfo = await getUserInfo(session.accessToken, authConfig);
@@ -202,6 +217,13 @@ app.get(
 app.get(
   "/auth/callback",
   asyncHandler(async (req, res) => {
+    if (!req.query.state) {
+      throw new Error("Expected query to contain state!");
+    }
+    if (!req.query.code) {
+      throw new Error("Expected query to contain code!");
+    }
+
     const session = await req.session.get();
 
     try {
