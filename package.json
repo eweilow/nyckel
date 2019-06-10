@@ -1,5 +1,5 @@
 {
-  "name": "@eweilow/nyckel-workspace",
+  "name": "@nyckel/workspace",
   "private": true,
   "version": "0.0.0",
   "description": "A framework agnostic library for Auth0 authentication in hybrid web apps",

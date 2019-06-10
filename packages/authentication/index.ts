@@ -1,3 +1,9 @@
+export { decodeJWT } from "./jwt/decode";
+
+export { verifyAndDecodeJWT } from "./jwt/verify";
+
+export { createRateLimiter } from "./utils/rateLimiter";
+
 export { concatUrl } from "./utils/concatUrl";
 export { getSafeHostname } from "./utils/safeHostname";
 

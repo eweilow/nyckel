@@ -43,15 +43,7 @@ export async function getUserInfo(
     }
   });
 
-  const limit = parseInt(response.headers.get("x-ratelimit-limit")!, 10);
-  const remaining = parseInt(
-    response.headers.get("x-ratelimit-remaining")!,
-    10
-  );
-  const resetTime =
-    parseInt(response.headers.get("x-ratelimit-reset")!, 10) * 1000;
-
-  userInfoRateLimiter.update(sub!, limit, remaining, resetTime);
+  userInfoRateLimiter.updateFromResponse(sub!, response);
 
   if (response.status === 429) {
     return getUserInfo(accessToken, config);

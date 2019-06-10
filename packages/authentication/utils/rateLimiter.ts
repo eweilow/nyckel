@@ -29,6 +29,7 @@ export function createRateLimiter() {
         untilNextRefresh,
         Math.max(0, untilNextRefresh * Math.pow(correctedUsed / limit, 5))
       );
+
       return delaySteps * Math.floor(value / delaySteps);
     },
     async wait(id: string) {
@@ -50,6 +51,20 @@ export function createRateLimiter() {
         resetMillis,
         untilNextRefresh
       });
+    },
+    updateFromResponse(
+      id: string,
+      response: { headers: { get: (name: string) => string | null } }
+    ) {
+      const limit = parseInt(response.headers.get("x-ratelimit-limit")!, 10);
+      const remaining = parseInt(
+        response.headers.get("x-ratelimit-remaining")!,
+        10
+      );
+      const resetTime =
+        parseInt(response.headers.get("x-ratelimit-reset")!, 10) * 1000;
+
+      limiter.update(id, limit, remaining, resetTime);
     }
   };
 
