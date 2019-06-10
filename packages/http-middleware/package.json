@@ -1,0 +1,33 @@
+{
+  "name": "@nyckel/http-middleware",
+  "version": "0.0.0",
+  "description": "The module of Nyckel that enhances HTTP requests with Nyckel authentication handling",
+  "main": "./dist/cjs",
+  "module": "./dist/esm",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eweilow/nyckel.git"
+  },
+  "author": "eweilow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eweilow/nyckel/issues"
+  },
+  "homepage": "https://github.com/eweilow/nyckel",
+  "dependencies": {
+    "@nyckel/authentication": "0.0.0",
+    "@nyckel/management": "0.0.0",
+    "@nyckel/sessions": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "12.0.7"
+  },
+  "peerDependencies": {},
+  "keywords": [
+    "nyckel"
+  ],
+  "types": "./"
+}

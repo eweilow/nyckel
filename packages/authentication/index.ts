@@ -1,6 +1,6 @@
 export { decodeJWT } from "./jwt/decode";
 
-export { verifyAndDecodeJWT } from "./jwt/verify";
+export { verifyAndDecodeJWT, DecodedJWT } from "./jwt/verify";
 
 export { createRateLimiter } from "./utils/rateLimiter";
 

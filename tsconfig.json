@@ -18,6 +18,18 @@
     },
     {
       "path": "packages/management/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/express-middleware/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/express-middleware/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/http-middleware/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/http-middleware/tsconfig.esm.json"
     }
   ]
 }

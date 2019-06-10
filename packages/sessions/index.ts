@@ -17,6 +17,9 @@ async function wrapInPromise<T = any>(
     });
   });
 }
+
+export type SessionManager = ReturnType<typeof createSessionManager>;
+
 export function createSessionManager(
   redisEndpoint: string,
   handleError: (err: Error) => void,
