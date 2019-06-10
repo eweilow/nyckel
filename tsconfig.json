@@ -12,6 +12,12 @@
     },
     {
       "path": "packages/sessions/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/management/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/management/tsconfig.esm.json"
     }
   ]
 }

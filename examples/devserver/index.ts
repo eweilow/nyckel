@@ -9,11 +9,20 @@ import {
   logoutUser,
   concatUrl,
   getSafeHostname,
-  attemptToRefreshToken
-} from "@eweilow/nyckel";
+  attemptToRefreshToken,
+  getUserInfo,
+  UserInfo,
+  decodeJWT
+} from "@nyckel/authentication";
 
-import { createSessionManager } from "@eweilow/nyckel-sessions";
-import { getUserInfo, UserInfo } from "@eweilow/nyckel";
+import {
+  getManagementToken,
+  getManagementUserInfo,
+  getManagementUserRoles,
+  getManagementUserPermissions
+} from "@nyckel/management";
+import { createSessionManager } from "@nyckel/sessions";
+import { DecodedJWT } from "@nyckel/authentication/jwt/verify";
 
 require("dotenv").config();
 
@@ -23,6 +32,13 @@ app.use(cookieParser());
 const authConfig = createGlobalAuthenticationConfig(
   process.env.AUTH0_CLIENT_ID!,
   process.env.AUTH0_CLIENT_SECRET!,
+  process.env.AUTH0_DOMAIN!,
+  process.env.AUTH0_AUDIENCE!
+);
+
+const authManagementConfig = createGlobalAuthenticationConfig(
+  process.env.AUTH0_MANAGEMENT_CLIENT_ID!,
+  process.env.AUTH0_MANAGEMENT_CLIENT_SECRET!,
   process.env.AUTH0_DOMAIN!,
   process.env.AUTH0_AUDIENCE!
 );
@@ -64,7 +80,9 @@ declare global {
       };
       user: {
         get(): Promise<
-          | (UserInfo & {
+          | ({
+              accessTokenData: DecodedJWT;
+              idTokenData: DecodedJWT;
               accessToken: string;
               idToken: string;
               expiresIn: number;
@@ -158,10 +176,9 @@ app.use((req, res, next) => {
         }
       }
 
-      const userInfo = await getUserInfo(session.accessToken, authConfig);
-
       return {
-        ...userInfo,
+        idTokenData: decodeJWT(session.idToken),
+        accessTokenData: decodeJWT(session.accessToken),
         accessToken: session.accessToken,
         idToken: session.idToken,
         expiresIn: session.expires - Date.now()
@@ -170,6 +187,63 @@ app.use((req, res, next) => {
   };
   next();
 });
+
+app.get(
+  "/management",
+  asyncHandler(async (req, res) => {
+    const user = await req.user.get();
+    if (user == null) {
+      res.write("<p>not logged in</p><br>");
+      res.write("<a href='/auth/login'>log in</a>");
+    } else {
+      res.write("<pre>" + JSON.stringify(user, null, "  ") + "</pre>");
+
+      let t = Date.now();
+      res.write(
+        "<pre>" +
+          JSON.stringify(
+            await getManagementUserInfo(
+              user.idTokenData.sub!,
+              authManagementConfig
+            ),
+            null,
+            "  "
+          ) +
+          "</pre>"
+      );
+      res.write("<p>" + (Date.now() - t) + "</p>");
+      t = Date.now();
+      res.write(
+        "<pre>" +
+          JSON.stringify(
+            await getManagementUserRoles(
+              user.idTokenData.sub!,
+              authManagementConfig
+            ),
+            null,
+            "  "
+          ) +
+          "</pre>"
+      );
+      res.write("<p>" + (Date.now() - t) + "</p>");
+      t = Date.now();
+      res.write(
+        "<pre>" +
+          JSON.stringify(
+            await getManagementUserPermissions(
+              user.idTokenData.sub!,
+              authManagementConfig
+            ),
+            null,
+            "  "
+          ) +
+          "</pre>"
+      );
+      res.write("<p>" + (Date.now() - t) + "</p>");
+    }
+    res.end();
+  })
+);
 
 app.get(
   "/auth/login",
