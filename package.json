@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "A framework agnostic library for Auth0 authentication in hybrid web apps",
   "scripts": {
-    "build-ts": "tsc --build",
+    "build-ts": "tsc --build --pretty tsconfig.compiler.json",
     "publish-prerelease": "lerna publish prerelease --dist-tag latest",
     "test": "yarn jest"
   },

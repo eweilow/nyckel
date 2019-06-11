@@ -1,0 +1,35 @@
+{
+  "exclude": ["**"],
+  "references": [
+    {
+      "path": "packages/authentication/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/authentication/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/sessions/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/sessions/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/management/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/management/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/express-middleware/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/express-middleware/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/http-middleware/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/http-middleware/tsconfig.esm.json"
+    }
+  ]
+}

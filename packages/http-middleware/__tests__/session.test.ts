@@ -122,6 +122,7 @@ describe("enhanceRequestWithSession", () => {
 
       expect(sessions.get).not.toHaveBeenCalled();
 
+      type T = string | null;
       expect(setCookie).not.toHaveBeenCalled();
       expect(clearCookie).not.toHaveBeenCalled();
     });
@@ -129,7 +130,7 @@ describe("enhanceRequestWithSession", () => {
     it("should return empty object if the session state is invalid", async () => {
       const sessions: SessionManager = {
         delete: jest.fn(),
-        get: jest.fn(() => null),
+        get: jest.fn((async () => null) as any),
         has: jest.fn(),
         lock: jest.fn(),
         set: jest.fn(),
