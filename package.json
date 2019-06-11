@@ -6,7 +6,7 @@
   "scripts": {
     "build-ts": "tsc --build --pretty tsconfig.compiler.json",
     "publish-prerelease": "lerna publish prerelease --dist-tag latest",
-    "test": "yarn jest"
+    "test": "yarn jest --coverage"
   },
   "repository": {
     "type": "git",
