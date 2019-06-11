@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`enhanceRequestWithUser should enhance a request correctly 1`] = `
+Object {
+  "fullUserData": [Function],
+  "get": [Function],
+  "permissions": [Function],
+  "roles": [Function],
+  "userInfo": [Function],
+}
+`;
