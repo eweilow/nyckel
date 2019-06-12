@@ -42,7 +42,8 @@ describe("encryption of whole data", () => {
 
     expect(original).not.toEqual(decrypted);
     expect(decrypted).toEqual(null);
-    expect(consoleSpy.mock.calls).toMatchSnapshot();
+    expect(consoleSpy.mock.calls[0].length).toBe(1);
+    expect(consoleSpy.mock.calls[0][0]).toBeInstanceOf(Error);
     consoleSpy.mockClear();
   });
 });

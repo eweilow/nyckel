@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`encryption of whole data returns null and logs error in console if data is invalid 1`] = `
-Array [
-  Array [
-    [SyntaxError: Unexpected token I in JSON at position 0],
-  ],
-]
-`;
