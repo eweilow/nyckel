@@ -17,6 +17,7 @@ describe("enhanceRequestWithSession", () => {
       clearCookie
     );
 
+    expect(req).toBe(enhancedReq);
     expect(enhancedReq.session).toBeDefined();
     expect(typeof enhancedReq.session.set).toBe("function");
     expect(typeof enhancedReq.session.get).toBe("function");

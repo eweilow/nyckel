@@ -1,5 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`enhanceRequestWithUser .get should return session if no other conditions are matched 1`] = `
+Object {
+  "accessToken": "accessToken",
+  "accessTokenData": Object {
+    "data": "accessToken",
+  },
+  "expiresIn": 400,
+  "idToken": "idToken",
+  "idTokenData": Object {
+    "data": "idToken",
+  },
+}
+`;
+
+exports[`enhanceRequestWithUser .get token refreshing should attempt to refresh token if acquired lock 1`] = `
+Object {
+  "accessToken": "refreshedAccessToken",
+  "accessTokenData": Object {
+    "data": "refreshedAccessToken",
+  },
+  "expiresIn": 400,
+  "idToken": "refreshedIdToken",
+  "idTokenData": Object {
+    "data": "refreshedIdToken",
+  },
+}
+`;
+
+exports[`enhanceRequestWithUser .get token refreshing should not attempt to refresh token if failed to acquire lock 1`] = `
+Object {
+  "accessToken": "accessToken",
+  "accessTokenData": Object {
+    "data": "accessToken",
+  },
+  "expiresIn": -100,
+  "idToken": "idToken",
+  "idTokenData": Object {
+    "data": "idToken",
+  },
+}
+`;
+
 exports[`enhanceRequestWithUser should enhance a request correctly 1`] = `
 Object {
   "fullUserData": [Function],
