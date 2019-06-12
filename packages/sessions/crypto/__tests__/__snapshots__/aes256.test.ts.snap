@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`aes256 decrypt throws if encrypted not provided properly 1`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if encrypted not provided properly 2`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if encrypted not provided properly 3`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if encrypted not provided properly 4`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if encrypted not provided properly 5`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if encrypted not provided properly 6`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if encrypted not provided properly 7`] = `"Provided 'encrypted' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if input length is less than 17 1`] = `"Provided \\"encrypted\\" must decrypt to a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 1`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 2`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 3`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 4`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 5`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 6`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 decrypt throws if key not provided properly 7`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 1`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 2`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 3`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 4`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 5`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 6`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if key not provided properly 7`] = `"Provided 'key' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 1`] = `"Provided 'plaintext' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 2`] = `"Provided 'plaintext' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 3`] = `"Provided 'plaintext' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 4`] = `"Provided 'plaintext' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 5`] = `"Provided 'plaintext' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 6`] = `"Provided 'plaintext' must be a non-empty string"`;
+
+exports[`aes256 encrypt throws if plaintext not provided properly 7`] = `"Provided 'plaintext' must be a non-empty string"`;
