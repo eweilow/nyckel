@@ -1,12 +1,11 @@
 import {
   GlobalAuthenticationConfig,
   concatUrl,
-  createRateLimiter
+  createRateLimiter,
+  verifyAndDecodeJWT
 } from "@nyckel/authentication";
 
 import fetch from "node-fetch";
-import { verifyAndDecodeJWT } from "@nyckel/authentication";
-import { createPromiseDebounce } from "../utils/promiseDebounce";
 
 const managementTokenRateLimiter = createRateLimiter();
 
@@ -41,7 +40,7 @@ type FetchTokenResult = {
 };
 
 const tokenId = "token";
-async function fetchManagementToken(
+export async function fetchManagementToken(
   config: GlobalAuthenticationConfig
 ): Promise<FetchTokenResult> {
   await managementTokenRateLimiter.wait(tokenId);
@@ -76,11 +75,3 @@ async function fetchManagementToken(
     scope: new Set(data.scope!.split(" "))
   };
 }
-
-const tokenDebouncer = createPromiseDebounce(
-  fetchManagementToken,
-  data => data.accessToken,
-  data => data.expires > Date.now() + 60000
-);
-
-export const getManagementToken = tokenDebouncer.get;
