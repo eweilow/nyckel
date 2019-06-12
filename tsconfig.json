@@ -21,5 +21,12 @@
     "strictPropertyInitialization": true,
     "stripInternal": true,
     "strictBindCallApply": true
-  }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/node_modules/**",
+    "**/*.d.ts",
+    "*.d.ts"
+  ]
 }
