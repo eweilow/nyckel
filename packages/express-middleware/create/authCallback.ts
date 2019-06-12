@@ -1,11 +1,11 @@
 import { RequestHandler } from "express";
 import { NyckelExpressMiddlewareOptions } from "../middleware";
-import { asyncHandler } from "..";
 import {
   concatUrl,
   requestToken,
   verifyCSRFPair
 } from "@nyckel/authentication";
+import { asyncHandler } from "../asyncHandler";
 
 export function createCallbackHandler(
   opts: NyckelExpressMiddlewareOptions
@@ -21,11 +21,13 @@ export function createCallbackHandler(
     }
 
     const session = await req.session.get();
+    if (session.csrfSecret == null) {
+      throw new Error("Session must contain a csrfSecret!");
+    }
 
     try {
-      const { csrfSecret } = session;
       await verifyCSRFPair({
-        secret: csrfSecret,
+        secret: session.csrfSecret,
         token: req.query.state
       });
     } catch (err) {

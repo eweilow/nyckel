@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { NyckelExpressMiddlewareOptions } from "../middleware";
-import { asyncHandler } from "..";
 import { concatUrl, logoutUser } from "@nyckel/authentication";
+import { asyncHandler } from "../asyncHandler";
 
 export function createLogoutHandler(
   opts: NyckelExpressMiddlewareOptions

@@ -25,6 +25,7 @@ interface EnhancedRequest {
 }
 
 export type NyckelExpressMiddlewareOptions = {
+  cookieName: string;
   secureCookies: boolean;
   sessionManager: SessionManager;
   trustProxyFn: (ip: string, val: 0) => boolean;

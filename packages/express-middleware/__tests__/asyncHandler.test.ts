@@ -7,12 +7,9 @@ describe("asyncHandler", () => {
     const handler = jest.fn(async () => {});
     const next = jest.fn();
 
-    try {
-      await asyncHandler(handler)(req, res, next);
-    } finally {
-      expect(handler).toBeCalledWith(req, res, next);
-      expect(next).not.toBeCalled();
-    }
+    await asyncHandler(handler)(req, res, next);
+    expect(handler).toBeCalledWith(req, res, next);
+    expect(next).not.toBeCalled();
   });
 
   it("handles rejected promises correctly", async () => {
@@ -24,11 +21,8 @@ describe("asyncHandler", () => {
     });
     const next = jest.fn();
 
-    try {
-      await asyncHandler(handler)(req, res, next);
-    } finally {
-      expect(handler).toBeCalledWith(req, res, next);
-      expect(next).toBeCalledWith(error);
-    }
+    await asyncHandler(handler)(req, res, next);
+    expect(handler).toBeCalledWith(req, res, next);
+    expect(next).toBeCalledWith(error);
   });
 });

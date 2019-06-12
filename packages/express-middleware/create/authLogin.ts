@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { NyckelExpressMiddlewareOptions } from "../middleware";
-import { asyncHandler } from "..";
 import { authorizeUser, concatUrl } from "@nyckel/authentication";
+import { asyncHandler } from "../asyncHandler";
 
 export function createLoginHandler(
   opts: NyckelExpressMiddlewareOptions
@@ -9,7 +9,8 @@ export function createLoginHandler(
   const { authConfig } = opts;
 
   return asyncHandler(async (req, res) => {
-    if (await req.user.get()) {
+    const user = await req.user.get();
+    if (user != null) {
       // Do nothing if user is already logged in
       res.redirect("/");
       return;

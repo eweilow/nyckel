@@ -40,6 +40,7 @@ const sessionManager = createSessionManager(
 );
 
 const authMiddleware = nyckelExpressMiddleware({
+  cookieName: process.env.COOKIE_NAME!,
   secureCookies: false,
   sessionManager,
   trustProxyFn: app.get("trust proxy fn"),

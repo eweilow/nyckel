@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { NyckelExpressMiddlewareOptions } from "../middleware";
-import { asyncHandler } from "..";
+import { asyncHandler } from "../asyncHandler";
 
 export function createLoggedOutHandler(
   opts: NyckelExpressMiddlewareOptions

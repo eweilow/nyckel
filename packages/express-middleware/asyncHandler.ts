@@ -7,11 +7,15 @@ export function asyncHandler(
     next: () => void
   ) => Promise<void>
 ) {
-  return (
+  return async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) => {
-    return handler(req, res, next).catch(err => next(err));
+    try {
+      await handler(req, res, next);
+    } catch (err) {
+      next(err);
+    }
   };
 }
