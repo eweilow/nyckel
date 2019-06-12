@@ -23,14 +23,14 @@ type ErrorResponseTokenBody = {
 
 function verifyTokenResponse(
   response: RequestTokenBody
-): response is ValidResponseTokenBody {
+): ValidResponseTokenBody {
   if ("error" in response) {
     throw new Error(response.error + ": " + response.error_description);
   }
   if (response.access_token == null) {
     throw new Error("Expected access_token to exist");
   }
-  return true;
+  return response;
 }
 
 type FetchTokenResult = {
@@ -62,15 +62,12 @@ export async function fetchManagementToken(
   }
 
   const body: RequestTokenBody = await response.json();
+  const verifiedBody = verifyTokenResponse(body);
 
-  if (!verifyTokenResponse(body)) {
-    throw new Error("Unable to verify token response");
-  }
-
-  const data = await verifyAndDecodeJWT(body.access_token, config);
+  const data = await verifyAndDecodeJWT(verifiedBody.access_token, config);
 
   return {
-    accessToken: body.access_token,
+    accessToken: verifiedBody.access_token,
     expires: data.exp * 1000,
     scope: new Set(data.scope!.split(" "))
   };

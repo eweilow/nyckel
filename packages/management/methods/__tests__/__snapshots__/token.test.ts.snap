@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fetchManagementToken should fail if access token was not returned 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`fetchManagementToken should fail if access token was not returned 2`] = `"Expected access_token to exist"`;
+
+exports[`fetchManagementToken should fail if error 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`fetchManagementToken should fail if error 2`] = `"oh no: something bad happened"`;
+
+exports[`fetchManagementToken should re-attempt if rate limited 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`fetchManagementToken should return correctly 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`fetchManagementToken should return correctly 2`] = `
+Object {
+  "accessToken": "token",
+  "expires": 1000000,
+  "scope": Set {
+    "a",
+    "scope",
+  },
+}
+`;
+
+exports[`fetchManagementToken should update rate limiting correctly 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`fetchManagementToken should wait for rate limiting correctly 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
