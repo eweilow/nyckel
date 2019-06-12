@@ -6,6 +6,7 @@ import {
 
 import fetch from "node-fetch";
 import { verifyAndDecodeJWT } from "@nyckel/authentication";
+import { createPromiseDebounce } from "../utils/promiseDebounce";
 
 const managementTokenRateLimiter = createRateLimiter();
 
@@ -76,28 +77,10 @@ async function fetchManagementToken(
   };
 }
 
-let cachedResult: FetchTokenResult | null = null;
-let currentlyFetching: Promise<FetchTokenResult> | null = null;
+const tokenDebouncer = createPromiseDebounce(
+  fetchManagementToken,
+  data => data.accessToken,
+  data => data.expires > Date.now() + 60000
+);
 
-export async function getManagementToken(
-  config: GlobalAuthenticationConfig
-): Promise<string> {
-  if (cachedResult == null) {
-    if (currentlyFetching == null) {
-      currentlyFetching = fetchManagementToken(config);
-      cachedResult = await currentlyFetching;
-      currentlyFetching = null;
-      return cachedResult.accessToken;
-    } else {
-      const fetched = await currentlyFetching;
-      return fetched.accessToken;
-    }
-  }
-
-  if (cachedResult.expires > Date.now() + 60000) {
-    return cachedResult.accessToken;
-  } else {
-    cachedResult = null;
-    return getManagementToken(config);
-  }
-}
+export const getManagementToken = tokenDebouncer.get;
