@@ -11,4 +11,13 @@ describe("createGlobalAuthenticationConfig", () => {
       )
     ).toMatchSnapshot();
   });
+  it("should work correctly without audience", () => {
+    const cfg = createGlobalAuthenticationConfig(
+      "param:clientId",
+      "param:clientSecret",
+      "http://domain.com"
+    );
+    expect(cfg).toMatchSnapshot();
+    expect(cfg.audience).toBe(cfg.urls.userinfo);
+  });
 });
