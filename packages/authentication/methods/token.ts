@@ -27,10 +27,13 @@ function verifyTokenResponse(
     throw new Error("Expected access_token to exist");
   }
   if (response.id_token == null) {
-    throw new Error("Expected access_token to exist");
+    throw new Error("Expected id_token to exist");
   }
   if (response.expires_in == null) {
     throw new Error("Expected expires_in to exist");
+  }
+  if (response.refresh_token == null) {
+    throw new Error("Expected refresh_token to exist");
   }
 
   return response;
@@ -65,14 +68,13 @@ export async function requestToken(
   let expiresUtcSeconds = Number.MAX_VALUE;
   try {
     decodedIdToken = await verifyAndDecodeJWT(verifiedBody.id_token, config);
-    if (decodedIdToken.exp < expiresUtcSeconds) {
-      expiresUtcSeconds = decodedIdToken.exp;
-    }
+    expiresUtcSeconds = decodedIdToken.exp;
   } catch (idTokenError) {
     idTokenError.message += " (id token)";
     throw idTokenError;
   }
   if (config.audience !== config.urls.userinfo) {
+    // if configurated audience matches the Auth0 userinfo scope, the access token will not be a JWT
     try {
       decodedAccessToken = await verifyAndDecodeJWT(
         verifiedBody.access_token,
