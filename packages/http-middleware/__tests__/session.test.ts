@@ -33,6 +33,7 @@ describe("enhanceRequestWithSession", () => {
   describe(".set", () => {
     it("should generate an id if the provided cookie is invalid", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn(),
         has: jest.fn(),
@@ -64,6 +65,7 @@ describe("enhanceRequestWithSession", () => {
 
     it("should not generate an id if the provided cookie is valid", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn(),
         has: jest.fn(),
@@ -97,6 +99,7 @@ describe("enhanceRequestWithSession", () => {
   describe(".get", () => {
     it("should return empty object if the provided cookie is invalid", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn(),
         has: jest.fn(),
@@ -130,6 +133,7 @@ describe("enhanceRequestWithSession", () => {
 
     it("should return empty object if the session state is invalid", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn((async () => null) as any),
         has: jest.fn(),
@@ -162,6 +166,7 @@ describe("enhanceRequestWithSession", () => {
 
     it("should return the session object if it's truthy", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn(async id => ({ id, data: "yes" } as any)),
         has: jest.fn(),
@@ -196,6 +201,7 @@ describe("enhanceRequestWithSession", () => {
   describe(".delete", () => {
     it("should do nothing the provided cookie is invalid", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn(),
         has: jest.fn(),
@@ -225,6 +231,7 @@ describe("enhanceRequestWithSession", () => {
 
     it("should work correctly if the provided cookie is valid", async () => {
       const sessions: SessionManager = {
+        client: {} as any,
         delete: jest.fn(),
         get: jest.fn(),
         has: jest.fn(),
