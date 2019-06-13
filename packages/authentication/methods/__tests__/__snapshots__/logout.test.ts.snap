@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`logoutUser returns correctly 1`] = `
+Object {
+  "redirectTo": "url:logout?client_id=param%3AclientId&returnTo=redirectUri",
+}
+`;
