@@ -7,6 +7,7 @@ import { generateCSRFPair } from "../state/generate";
 function unique(...strs: string[]): string {
   return [...new Set(strs)].join(" ");
 }
+
 export async function authorizeUser(
   scope: string[],
   redirectUrl: string,
