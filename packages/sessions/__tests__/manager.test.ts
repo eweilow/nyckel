@@ -7,6 +7,12 @@ import { createRedisClient } from "../redis";
 import { createKeyHash } from "../crypto/key";
 import { encryptData } from "../crypto/value";
 
+jest.mock("uuid/v4", () =>
+  jest.fn(() => {
+    return jest.requireActual("uuid/v4")();
+  })
+);
+
 jest.mock("../redis", () => {
   return {
     createRedisClient: jest.fn(() => ({
@@ -24,7 +30,9 @@ jest.mock("../crypto/value", () => {
   };
 });
 
-jest.mock("redlock");
+jest.mock("redlock", () => {
+  return jest.fn();
+});
 
 describe("createSessionManager", () => {
   beforeEach(() => {
@@ -69,6 +77,28 @@ describe("createSessionManager", () => {
         } = ((createRedisClient as any) as jest.Mock).mock.results[0].value;
 
         expect(client).toBe(returnedClient);
+      });
+    });
+
+    describe(".generateId()", () => {
+      it("returns a valid id", () => {
+        const manager = createSessionManager("url:redisEndpoint", () => {}, {
+          salt: "option:salt",
+          secret: "option:secret",
+          ttl: 1000
+        });
+        const id = manager.generateId();
+        expect(typeof id).toBe("string");
+        expect(manager.isValidId(id)).toBe(true);
+      });
+      it("generates a UUID/v4", () => {
+        const manager = createSessionManager("url:redisEndpoint", () => {}, {
+          salt: "option:salt",
+          secret: "option:secret",
+          ttl: 1000
+        });
+        manager.generateId();
+        expect(uuid).toBeCalledTimes(1);
       });
     });
 
@@ -136,6 +166,71 @@ describe("createSessionManager", () => {
       ttl
     });
   }
+
+  describe(".lock(id, ttl)", () => {
+    function setupMock(canLock: boolean) {
+      const unlock = jest.fn();
+      const client = {
+        unlock,
+        lock: jest.fn(() => {
+          if (canLock) {
+            return {
+              unlock
+            };
+          }
+          throw new Error("Cannot lock");
+        })
+      };
+      ((Redlock as any) as jest.Mock).mockImplementationOnce(() => {
+        return client;
+      });
+      return { client, unlock };
+    }
+
+    it("it locks if Redlock can acquire a lock", async () => {
+      const { client, unlock } = setupMock(true);
+      const manager = createManager();
+
+      const promise = manager.lock("id", 1000);
+      await expect(promise).resolves.toEqual({
+        acquired: true,
+        release: expect.any(Function)
+      });
+
+      expect(client.lock).toBeCalledWith("locks:" + keyToHash("id"), 1000);
+      expect(client.unlock).not.toBeCalled();
+    });
+
+    it("it can release an acquired lock", async () => {
+      const { client, unlock } = setupMock(true);
+      const manager = createManager();
+
+      const lock = (await manager.lock("id", 1000)) as {
+        acquired: true;
+        release: () => Promise<void>;
+      };
+      expect(lock.acquired).toBe(true);
+      expect(client.unlock).not.toBeCalled();
+
+      await lock.release();
+      expect(client.lock).toBeCalledWith("locks:" + keyToHash("id"), 1000);
+      expect(client.unlock).toBeCalled();
+    });
+
+    it("it doesn't lock if Redlock fails to acquire a lock", async () => {
+      const { client, unlock } = setupMock(false);
+      const manager = createManager();
+
+      const promise = manager.lock("id", 1000);
+      await expect(promise).resolves.toEqual({
+        acquired: false,
+        err: expect.any(Error)
+      });
+
+      expect(client.lock).toBeCalledWith("locks:" + keyToHash("id"), 1000);
+      expect(client.unlock).not.toBeCalled();
+    });
+  });
 
   describe(".set(id, data)", () => {
     function setupMock() {

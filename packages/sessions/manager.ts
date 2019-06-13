@@ -53,7 +53,8 @@ export function createSessionManager(
       id: string,
       ttl: number
     ): Promise<
-      { acquired: true; release: () => Promise<void> } | { acquired: false }
+      | { acquired: true; release: () => Promise<void> }
+      | { acquired: false; err: any }
     > {
       const key = createKeyHash(id, options.salt);
       try {
@@ -66,6 +67,7 @@ export function createSessionManager(
         };
       } catch (err) {
         return {
+          err,
           acquired: false
         };
       }
