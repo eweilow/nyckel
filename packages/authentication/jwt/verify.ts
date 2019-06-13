@@ -2,7 +2,7 @@ import { GlobalAuthenticationConfig } from "../utils/globalConfig";
 import LRU from "lru-cache";
 import { Verifier } from "./verifier";
 
-const verifierCache = new LRU<string, Verifier>({
+export const verifierCache = new LRU<string, Verifier>({
   max: 10,
   maxAge: 7 * 24 * 60 * 60 * 1000 // A week
 });
