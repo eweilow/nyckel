@@ -59,7 +59,10 @@ describe("createCallbackHandler", () => {
     const req = {
       protocol,
       get: getHeader,
-      cookies: { [cookieName]: "cookie" }
+      cookies: { [cookieName]: "cookie" },
+      connection: {
+        remoteAddress: "remoteAddress"
+      }
     } as any;
 
     return { trustProxyFn, getHeader, handler, req, sessionManager };
@@ -83,6 +86,7 @@ describe("createCallbackHandler", () => {
         "https",
         headers["X-Forwarded-Host"],
         headers["Host"],
+        req.connection.remoteAddress,
         trustProxyFn
       );
       const val = (getSafeHostname as jest.Mock).mock.results[0];

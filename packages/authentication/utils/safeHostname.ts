@@ -28,7 +28,7 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-function pickFirst(hostHeader?: string): string | null {
+export function pickFirst(hostHeader?: string): string | null {
   if (!hostHeader || hostHeader == null) {
     return null;
   }
@@ -39,16 +39,17 @@ export function getSafeHostname(
   protocol: string,
   xForwardedHostHeader: string | undefined,
   hostHeader: string | undefined,
+  remoteHost: string | undefined,
   isTrusted: (ip: string, val: 0) => boolean
 ) {
-  let host!: string;
   const forwardedHost = pickFirst(xForwardedHostHeader);
-  if (forwardedHost == null || !isTrusted(forwardedHost, 0)) {
+  let host: string | null = forwardedHost;
+  if (host == null || !(remoteHost != null && isTrusted(remoteHost, 0))) {
     host = pickFirst(hostHeader)!;
   }
 
   return format({
     protocol: protocol,
-    host
+    host: host
   });
 }

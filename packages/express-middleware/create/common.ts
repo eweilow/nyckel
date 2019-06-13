@@ -23,6 +23,7 @@ export function createCommonMiddleware(
       req.protocol,
       req.get("X-Forwarded-Host"),
       req.get("Host"),
+      req.connection.remoteAddress,
       trustProxyFn
     );
 
