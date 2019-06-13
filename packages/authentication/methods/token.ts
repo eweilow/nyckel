@@ -19,7 +19,7 @@ type ErrorResponseTokenBody = {
 
 function verifyTokenResponse(
   response: RequestTokenBody
-): response is ValidResponseTokenBody {
+): ValidResponseTokenBody {
   if ("error" in response) {
     throw new Error(response.error + ": " + response.error_description);
   }
@@ -33,7 +33,7 @@ function verifyTokenResponse(
     throw new Error("Expected expires_in to exist");
   }
 
-  return true;
+  return response;
 }
 
 export async function requestToken(
@@ -58,15 +58,13 @@ export async function requestToken(
 
   const body: RequestTokenBody = await response.json();
 
-  if (!verifyTokenResponse(body)) {
-    throw new Error("Unable to verify token response");
-  }
+  const verifiedBody = verifyTokenResponse(body);
 
   let decodedIdToken!: DecodedJWT;
   let decodedAccessToken: DecodedJWT | null = null;
   let expiresUtcSeconds = Number.MAX_VALUE;
   try {
-    decodedIdToken = await verifyAndDecodeJWT(body.id_token, config);
+    decodedIdToken = await verifyAndDecodeJWT(verifiedBody.id_token, config);
     if (decodedIdToken.exp < expiresUtcSeconds) {
       expiresUtcSeconds = decodedIdToken.exp;
     }
@@ -76,7 +74,10 @@ export async function requestToken(
   }
   if (config.audience !== config.urls.userinfo) {
     try {
-      decodedAccessToken = await verifyAndDecodeJWT(body.access_token, config);
+      decodedAccessToken = await verifyAndDecodeJWT(
+        verifiedBody.access_token,
+        config
+      );
       if (decodedAccessToken.exp < expiresUtcSeconds) {
         expiresUtcSeconds = decodedAccessToken.exp;
       }
@@ -88,9 +89,9 @@ export async function requestToken(
 
   const expiresUtcMilliseconds = expiresUtcSeconds * 1000;
   return {
-    refreshToken: body.refresh_token,
-    accessToken: body.access_token,
-    idToken: body.id_token,
+    refreshToken: verifiedBody.refresh_token,
+    accessToken: verifiedBody.access_token,
+    idToken: verifiedBody.id_token,
     expires: expiresUtcMilliseconds
   };
 }
