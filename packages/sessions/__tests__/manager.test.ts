@@ -2,6 +2,11 @@ import Redlock from "redlock";
 
 import uuid from "uuid/v4";
 
+import { createSessionManager } from "..";
+import { createRedisClient } from "../redis";
+import { createKeyHash } from "../crypto/key";
+import { encryptData } from "../crypto/value";
+
 jest.mock("../redis", () => {
   return {
     createRedisClient: jest.fn(() => ({
@@ -12,11 +17,14 @@ jest.mock("../redis", () => {
   };
 });
 
-jest.mock("redlock");
+jest.mock("../crypto/value", () => {
+  return {
+    encryptData: jest.fn((...params) => JSON.stringify(params)),
+    decryptData: jest.fn((id, salt, secret, encrypted) => JSON.parse(encrypted))
+  };
+});
 
-import { createSessionManager } from "..";
-import { createRedisClient } from "../redis";
-import { createKeyHash } from "../crypto/key";
+jest.mock("redlock");
 
 describe("createSessionManager", () => {
   beforeEach(() => {
@@ -118,14 +126,124 @@ describe("createSessionManager", () => {
   });
 
   const salt = "option:salt";
+  const secret = "option:secret";
+  const ttl = 1000;
   const keyToHash = (key: string) => createKeyHash(key, salt);
   function createManager() {
     return createSessionManager("url:redisEndpoint", () => {}, {
       salt,
-      secret: "option:secret",
-      ttl: 1000
+      secret,
+      ttl
     });
   }
+
+  describe(".set(id, data)", () => {
+    function setupMock() {
+      const client = {
+        setex: jest.fn((key, ttl, encrypted, cb) => cb(null))
+      };
+      ((createRedisClient as any) as jest.Mock).mockReturnValueOnce({
+        client
+      });
+      return client;
+    }
+
+    it("resolves if key exists", async () => {
+      const client = setupMock();
+      const manager = createManager();
+      expect(
+        await manager.set("exists", { data: "thisIsData" })
+      ).toBeUndefined();
+      expect(client.setex).toBeCalledTimes(1);
+      expect(client.setex).toBeCalledWith(
+        keyToHash("exists"),
+        ttl,
+        encryptData(
+          ...(((encryptData as any) as jest.Mock).mock.calls[0] as [
+            any,
+            any,
+            any,
+            any
+          ])
+        ), // the mock implementation simply strinigfies the arguments
+        expect.any(Function)
+      );
+    });
+
+    it("resolves if key does not exist", async () => {
+      const client = setupMock();
+      const manager = createManager();
+      expect(
+        await manager.set("non-existant", { data: "thisIsData" })
+      ).toBeUndefined();
+      expect(client.setex).toBeCalledTimes(1);
+      expect(client.setex).toBeCalledWith(
+        keyToHash("non-existant"),
+        ttl,
+        encryptData(
+          ...(((encryptData as any) as jest.Mock).mock.calls[0] as [
+            any,
+            any,
+            any,
+            any
+          ])
+        ), // the mock implementation simply strinigfies the arguments
+        expect.any(Function)
+      );
+    });
+  });
+
+  describe(".get(id)", () => {
+    function setupMock() {
+      const client = {
+        get: jest.fn((key, cb) =>
+          cb(
+            null,
+            key === keyToHash("exists")
+              ? JSON.stringify({ encryptedData: "yes" })
+              : null
+          )
+        ),
+        expire: jest.fn((key, ttl, cb) => cb(null))
+      };
+      ((createRedisClient as any) as jest.Mock).mockReturnValueOnce({
+        client
+      });
+      return client;
+    }
+
+    it("resolves if key exists", async () => {
+      const client = setupMock();
+      const manager = createManager();
+
+      const data = await manager.get("exists");
+      expect(data).toEqual({ encryptedData: "yes" });
+      expect(client.get).toBeCalledTimes(1);
+      expect(client.get).toBeCalledWith(
+        keyToHash("exists"),
+        expect.any(Function)
+      );
+      expect(client.expire).toBeCalledTimes(1);
+      expect(client.expire).toBeCalledWith(
+        keyToHash("exists"),
+        ttl,
+        expect.any(Function)
+      );
+    });
+
+    it("resolves if key does not exist", async () => {
+      const client = setupMock();
+      const manager = createManager();
+      const data = await manager.get("non-existant");
+      expect(data).toBeNull();
+      expect(client.get).toBeCalledTimes(1);
+      expect(client.get).toBeCalledWith(
+        keyToHash("non-existant"),
+        expect.any(Function)
+      );
+      expect(client.expire).not.toBeCalled();
+    });
+  });
 
   describe(".delete(id)", () => {
     function setupMock() {
