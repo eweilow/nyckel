@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`concatUrl should work correctly 1`] = `
+Object {
+  "input": Object {
+    "origin": "https://example.com",
+    "pathname": "/test/test",
+  },
+  "output": Object {
+    "origin": "https://example.com",
+    "pathname": "/test/test",
+    "url": "https://example.com/test/test",
+  },
+}
+`;
+
+exports[`concatUrl should work correctly 2`] = `
+Object {
+  "input": Object {
+    "origin": "https://example.com",
+    "pathname": "https://example.com",
+  },
+  "output": Object {
+    "origin": "https://example.com",
+    "pathname": "/https://example.com",
+    "url": "https://example.com/https://example.com",
+  },
+}
+`;
+
+exports[`concatUrl should work correctly 3`] = `
+Object {
+  "input": Object {
+    "origin": "https://example.com",
+    "pathname": "",
+  },
+  "output": Object {
+    "origin": "https://example.com",
+    "pathname": "/",
+    "url": "https://example.com/",
+  },
+}
+`;
+
+exports[`concatUrl should work correctly 4`] = `
+Object {
+  "input": Object {
+    "origin": "https://example.com:3000",
+    "pathname": "",
+  },
+  "output": Object {
+    "origin": "https://example.com:3000",
+    "pathname": "/",
+    "url": "https://example.com:3000/",
+  },
+}
+`;
+
+exports[`concatUrl should work correctly 5`] = `
+Object {
+  "input": Object {
+    "origin": "http://example.com:3000",
+    "pathname": "",
+  },
+  "output": Object {
+    "origin": "http://example.com:3000",
+    "pathname": "/",
+    "url": "http://example.com:3000/",
+  },
+}
+`;
+
+exports[`concatUrl should work correctly 6`] = `
+Object {
+  "input": Object {
+    "origin": "http://example.com",
+    "pathname": "",
+  },
+  "output": Object {
+    "origin": "http://example.com",
+    "pathname": "/",
+    "url": "http://example.com/",
+  },
+}
+`;
