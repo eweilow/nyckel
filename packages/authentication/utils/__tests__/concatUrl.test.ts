@@ -1,4 +1,4 @@
-import { concatUrl } from "../..";
+import { concatUrl } from "../concatUrl";
 
 describe("concatUrl", () => {
   it("should work correctly", () => {
