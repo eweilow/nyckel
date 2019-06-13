@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createSessionManager has the correct signature 1`] = `
+Object {
+  "client": Object {
+    "isThisARedisClient": true,
+  },
+  "delete": [Function],
+  "generateId": [Function],
+  "get": [Function],
+  "has": [Function],
+  "isValidId": [Function],
+  "lock": [Function],
+  "set": [Function],
+}
+`;
