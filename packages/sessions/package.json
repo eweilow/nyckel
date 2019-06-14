@@ -32,5 +32,6 @@
   "keywords": [
     "nyckel"
   ],
-  "types": "./"
+  "types": "./",
+  "gitHead": "48ceeacb01d90f875aa79ad1c6cfc593184f579b"
 }
