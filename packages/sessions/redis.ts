@@ -1,4 +1,4 @@
-import { createClient, ClientOpts } from "redis";
+import { createClient, ClientOpts, RedisClient } from "redis";
 import { EventEmitter } from "events";
 
 export function createRedisClient(
@@ -54,7 +54,7 @@ export function createRedisClient(
   markUnhealthy();
 
   return {
-    client,
+    client: client as RedisClient,
     get healthy() {
       return healthy;
     },
