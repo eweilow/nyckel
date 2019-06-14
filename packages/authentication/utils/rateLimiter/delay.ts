@@ -1,13 +1,15 @@
+const delaySteps: number = 200;
+
 export function calculateRateLimiterDelay(
   then: number,
   now: number,
   limit: number,
   used: number,
-  untilNextRefresh: number,
-  delaySteps: number = 200
+  untilNextRefresh: number
 ) {
+  const timeSinceThen = now - then;
   const correctedUsed = Math.ceil(
-    Math.max(0, used - (now - then) / untilNextRefresh)
+    Math.max(0, used - timeSinceThen / untilNextRefresh)
   );
 
   const value = Math.min(
