@@ -8,9 +8,9 @@ module.exports = {
   },
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80
+      branches: 95,
+      functions: 95,
+      lines: 90
     }
   },
   coveragePathIgnorePatterns: [
