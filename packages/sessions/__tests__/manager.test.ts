@@ -50,28 +50,31 @@ describe("createSessionManager", () => {
   });
 
   it("calls Redlock correctly", () => {
-    const { client } = createSessionManager("url:redisEndpoint", () => {}, {
+    const {
+      redisClient: { client: returnedClient }
+    } = createSessionManager("url:redisEndpoint", () => {}, {
       salt: "option:salt",
       secret: "option:secret",
       ttl: 1000
     });
-    expect((Redlock as any) as jest.Mock).toHaveBeenCalledWith([client], {
-      retryCount: 0
-    });
+    expect((Redlock as any) as jest.Mock).toHaveBeenCalledWith(
+      [returnedClient],
+      {
+        retryCount: 0
+      }
+    );
   });
 
   describe("properties", () => {
     describe(".client", () => {
       it("returns the client provided by Redis", () => {
-        const { client: returnedClient } = createSessionManager(
-          "url:redisEndpoint",
-          () => {},
-          {
-            salt: "option:salt",
-            secret: "option:secret",
-            ttl: 1000
-          }
-        );
+        const {
+          redisClient: { client: returnedClient }
+        } = createSessionManager("url:redisEndpoint", () => {}, {
+          salt: "option:salt",
+          secret: "option:secret",
+          ttl: 1000
+        });
         const {
           client
         } = ((createRedisClient as any) as jest.Mock).mock.results[0].value;

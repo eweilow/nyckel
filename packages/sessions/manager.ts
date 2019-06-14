@@ -20,19 +20,21 @@ export function createSessionManager(
     redisOptions?: ClientOpts;
   }
 ) {
-  const { client } = createRedisClient(
+  const redisClient = createRedisClient(
     redisEndpoint,
     handleError,
     options.redisOptions
   );
+
+  const { client } = redisClient;
 
   const redlock = new Redlock([client], {
     retryCount: 0
   });
 
   return {
-    get client() {
-      return client;
+    get redisClient() {
+      return redisClient;
     },
     isValidId(id?: string) {
       if (id == null) {
