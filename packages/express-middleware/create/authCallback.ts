@@ -41,6 +41,6 @@ export function createCallbackHandler(
       authConfig
     );
     await req.session.set(data);
-    res.redirect("/");
+    res.redirect(concatUrl(req.realHost, "/"));
   });
 }

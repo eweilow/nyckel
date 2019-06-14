@@ -152,6 +152,6 @@ describe("createCallbackHandler", () => {
     );
     expect(session.set).toBeCalledWith(requestTokenData);
 
-    expect(redirect).toBeCalledWith("/");
+    expect(redirect).toBeCalledWith("http://example.com/");
   });
 });

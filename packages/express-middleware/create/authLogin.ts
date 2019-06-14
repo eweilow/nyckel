@@ -12,7 +12,7 @@ export function createLoginHandler(
     const user = await req.user.get();
     if (user != null) {
       // Do nothing if user is already logged in
-      res.redirect("/");
+      res.redirect(concatUrl(req.realHost, "/"));
       return;
     }
 

@@ -31,6 +31,7 @@ describe("createLoginHandler", () => {
     const redirect = jest.fn();
     await handler(
       {
+        realHost: "http://example.com",
         user: {
           get: getUser
         }
@@ -43,7 +44,7 @@ describe("createLoginHandler", () => {
 
     expect(next).not.toBeCalled();
     expect(getUser).toBeCalled();
-    expect(redirect).toBeCalledWith("/");
+    expect(redirect).toBeCalledWith("http://example.com/");
     expect(authorizeUser).not.toBeCalled();
   });
 
