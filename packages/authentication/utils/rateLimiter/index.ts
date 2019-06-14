@@ -1,3 +1,5 @@
+import { calculateRateLimiterDelay } from "./delay";
+
 export function createRateLimiter() {
   const store = new Map<
     string,
@@ -11,9 +13,10 @@ export function createRateLimiter() {
     }
   >();
 
-  const delaySteps = 200;
-
   let limiter = {
+    get store() {
+      return store;
+    },
     delay(id: string) {
       if (!store.has(id)) {
         return 0;
@@ -21,16 +24,13 @@ export function createRateLimiter() {
 
       const { now: then, limit, used, untilNextRefresh } = store.get(id)!;
 
-      const correctedUsed = Math.ceil(
-        Math.max(0, used - (Date.now() - then) / untilNextRefresh)
+      return calculateRateLimiterDelay(
+        then,
+        Date.now(),
+        limit,
+        used,
+        untilNextRefresh
       );
-
-      const value = Math.min(
-        untilNextRefresh,
-        Math.max(0, untilNextRefresh * Math.pow(correctedUsed / limit, 5))
-      );
-
-      return delaySteps * Math.floor(value / delaySteps);
     },
     async wait(id: string) {
       const delay = limiter.delay(id);
