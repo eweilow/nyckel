@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getUserInfo fail on missing data throws if email is an invalid type 1`] = `"Expected decoded.email to be type string, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if email is missing from body 1`] = `"Expected decoded userinfo to have property 'email'"`;
+
+exports[`getUserInfo fail on missing data throws if email_verified is an invalid type 1`] = `"Expected decoded.email_verified to be type boolean, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if email_verified is missing from body 1`] = `"Expected decoded userinfo to have property 'email_verified'"`;
+
+exports[`getUserInfo fail on missing data throws if name is an invalid type 1`] = `"Expected decoded.name to be type string, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if name is missing from body 1`] = `"Expected decoded userinfo to have property 'name'"`;
+
+exports[`getUserInfo fail on missing data throws if nickname is an invalid type 1`] = `"Expected decoded.nickname to be type string, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if nickname is missing from body 1`] = `"Expected decoded userinfo to have property 'nickname'"`;
+
+exports[`getUserInfo fail on missing data throws if picture is an invalid type 1`] = `"Expected decoded.picture to be type string, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if picture is missing from body 1`] = `"Expected decoded userinfo to have property 'picture'"`;
+
+exports[`getUserInfo fail on missing data throws if sub is an invalid type 1`] = `"Expected decoded.sub to be type string, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if sub is missing from body 1`] = `"Expected decoded userinfo to have property 'sub'"`;
+
+exports[`getUserInfo fail on missing data throws if updated_at is an invalid type 1`] = `"Expected decoded.updated_at to be type string, but got number"`;
+
+exports[`getUserInfo fail on missing data throws if updated_at is missing from body 1`] = `"Expected decoded userinfo to have property 'updated_at'"`;
+
+exports[`getUserInfo should fail if error 1`] = `
+Array [
+  Array [
+    "url:userinfo",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer accessToken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUserInfo should fail if error 2`] = `"Expected decoded userinfo to have property 'sub'"`;
+
+exports[`getUserInfo should re-attempt if rate limited 1`] = `
+Array [
+  Array [
+    "url:userinfo",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer accessToken",
+      },
+    },
+  ],
+  Array [
+    "url:userinfo",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer accessToken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUserInfo should return correctly 1`] = `
+Array [
+  Array [
+    "url:userinfo",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer accessToken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUserInfo should return correctly 2`] = `
+Object {
+  "email": "email",
+  "emailVerified": false,
+  "locale": undefined,
+  "name": "name",
+  "nickname": "nickname",
+  "picture": "picture",
+  "sub": "sub",
+  "updatedAt": 2018-10-21T00:00:00.000Z,
+}
+`;
+
+exports[`getUserInfo should update rate limiting correctly 1`] = `
+Array [
+  Array [
+    "url:userinfo",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer accessToken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUserInfo should wait for rate limiting correctly 1`] = `
+Array [
+  Array [
+    "url:userinfo",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer accessToken",
+      },
+    },
+  ],
+]
+`;
