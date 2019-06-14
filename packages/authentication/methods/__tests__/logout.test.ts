@@ -1,4 +1,4 @@
-import { authorizeUser, GlobalAuthenticationConfig, logoutUser } from "../..";
+import { GlobalAuthenticationConfig, logoutUser } from "../..";
 
 const config: GlobalAuthenticationConfig = {
   audience: "param:audience",
