@@ -19,6 +19,7 @@ describe("createLoggedOutHandler", () => {
     const deleteSession = jest.fn();
     await handler(
       {
+        realHost: "https://realHost.com",
         session: {
           delete: deleteSession
         }
@@ -40,6 +41,7 @@ describe("createLoggedOutHandler", () => {
     const redirect = jest.fn();
     await handler(
       {
+        realHost: "https://realHost.com",
         session: {
           delete: jest.fn()
         }
@@ -51,6 +53,6 @@ describe("createLoggedOutHandler", () => {
     );
 
     expect(next).not.toBeCalled();
-    expect(redirect).toBeCalledWith("/");
+    expect(redirect).toBeCalledWith("https://realhost.com/");
   });
 });
