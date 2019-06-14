@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createCallbackHandler attempts to verify the CSRF pair and deletes session if it cannot verify the pair 1`] = `"Unable to verify CSRF pair (test message)"`;
+
+exports[`createCallbackHandler throws if code is not in query 1`] = `"Expected query to contain code!"`;
+
+exports[`createCallbackHandler throws if csrfSecret is not in session 1`] = `"Session must contain a csrfSecret!"`;
+
+exports[`createCallbackHandler throws if state is not in query 1`] = `"Expected query to contain state!"`;

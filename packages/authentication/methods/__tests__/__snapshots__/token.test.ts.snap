@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requestToken should fail if access_token was not returned 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should fail if access_token was not returned 2`] = `"Expected access_token to exist"`;
+
+exports[`requestToken should fail if error 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should fail if error 2`] = `"oh no: something bad happened"`;
+
+exports[`requestToken should fail if expires_in was not returned 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should fail if expires_in was not returned 2`] = `"Expected expires_in to exist"`;
+
+exports[`requestToken should fail if id_token was not returned 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should fail if id_token was not returned 2`] = `"Expected id_token to exist"`;
+
+exports[`requestToken should fail if refresh_token was not returned 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should fail if refresh_token was not returned 2`] = `"Expected refresh_token to exist"`;
+
+exports[`requestToken should return correctly 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should return correctly 2`] = `
+Object {
+  "accessToken": "access_token",
+  "expires": 5000000,
+  "idToken": "id_token",
+  "refreshToken": "refresh_token",
+}
+`;
+
+exports[`requestToken should return the expiration of access_token if it's shortest 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should return the expiration of access_token if it's shortest 2`] = `
+Object {
+  "accessToken": "access_token",
+  "expires": 5000000,
+  "idToken": "id_token",
+  "refreshToken": "refresh_token",
+}
+`;
+
+exports[`requestToken should return the expiration of id_token if it's shortest 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should return the expiration of id_token if it's shortest 2`] = `
+Object {
+  "accessToken": "access_token",
+  "expires": 4500000,
+  "idToken": "id_token",
+  "refreshToken": "refresh_token",
+}
+`;
+
+exports[`requestToken should throw if access_token cannot be decoded 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should throw if access_token cannot be decoded 2`] = `"Error (access token)"`;
+
+exports[`requestToken should throw if id_token cannot be decoded 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`requestToken should throw if id_token cannot be decoded 2`] = `"Error (id token)"`;

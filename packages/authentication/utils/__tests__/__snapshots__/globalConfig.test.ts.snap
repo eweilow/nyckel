@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createGlobalAuthenticationConfig should work correctly 1`] = `
+Object {
+  "audience": "param:audience",
+  "authorizationDomain": "http://domain.com",
+  "clientId": "param:clientId",
+  "clientSecret": "param:clientSecret",
+  "urls": Object {
+    "authorization": "http://domain.com/authorize",
+    "issuer": "http://domain.com/",
+    "jwks": "http://domain.com/.well-known/jwks.json",
+    "logout": "http://domain.com/v2/logout",
+    "token": "http://domain.com/oauth/token",
+    "userinfo": "http://domain.com/userinfo",
+  },
+}
+`;
+
+exports[`createGlobalAuthenticationConfig should work correctly without audience 1`] = `
+Object {
+  "audience": "http://domain.com/userinfo",
+  "authorizationDomain": "http://domain.com",
+  "clientId": "param:clientId",
+  "clientSecret": "param:clientSecret",
+  "urls": Object {
+    "authorization": "http://domain.com/authorize",
+    "issuer": "http://domain.com/",
+    "jwks": "http://domain.com/.well-known/jwks.json",
+    "logout": "http://domain.com/v2/logout",
+    "token": "http://domain.com/oauth/token",
+    "userinfo": "http://domain.com/userinfo",
+  },
+}
+`;

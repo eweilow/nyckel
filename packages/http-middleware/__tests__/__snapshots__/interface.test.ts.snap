@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`public API should be correct 1`] = `
+Object {
+  "enhanceRequestWithSession": [Function],
+  "enhanceRequestWithUser": [Function],
+}
+`;

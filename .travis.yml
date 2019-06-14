@@ -1,0 +1,17 @@
+language: node_js
+node_js: 11.9
+cache: yarn
+
+install:
+  - npm i yarn@1.13.0 -g
+  - yarn config set cache-folder $HOME/.yarn-cache
+  - yarn
+
+script:
+  - yarn test
+  - yarn build-ts
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change

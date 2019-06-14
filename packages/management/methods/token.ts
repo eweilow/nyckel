@@ -1,11 +1,11 @@
 import {
   GlobalAuthenticationConfig,
   concatUrl,
-  createRateLimiter
+  createRateLimiter,
+  verifyAndDecodeJWT
 } from "@nyckel/authentication";
 
 import fetch from "node-fetch";
-import { verifyAndDecodeJWT } from "@nyckel/authentication";
 
 const managementTokenRateLimiter = createRateLimiter();
 
@@ -23,14 +23,14 @@ type ErrorResponseTokenBody = {
 
 function verifyTokenResponse(
   response: RequestTokenBody
-): response is ValidResponseTokenBody {
+): ValidResponseTokenBody {
   if ("error" in response) {
     throw new Error(response.error + ": " + response.error_description);
   }
   if (response.access_token == null) {
     throw new Error("Expected access_token to exist");
   }
-  return true;
+  return response;
 }
 
 type FetchTokenResult = {
@@ -40,7 +40,7 @@ type FetchTokenResult = {
 };
 
 const tokenId = "token";
-async function fetchManagementToken(
+export async function fetchManagementToken(
   config: GlobalAuthenticationConfig
 ): Promise<FetchTokenResult> {
   await managementTokenRateLimiter.wait(tokenId);
@@ -62,42 +62,13 @@ async function fetchManagementToken(
   }
 
   const body: RequestTokenBody = await response.json();
+  const verifiedBody = verifyTokenResponse(body);
 
-  if (!verifyTokenResponse(body)) {
-    throw new Error("Unable to verify token response");
-  }
-
-  const data = await verifyAndDecodeJWT(body.access_token, config);
+  const data = await verifyAndDecodeJWT(verifiedBody.access_token, config);
 
   return {
-    accessToken: body.access_token,
+    accessToken: verifiedBody.access_token,
     expires: data.exp * 1000,
     scope: new Set(data.scope!.split(" "))
   };
-}
-
-let cachedResult: FetchTokenResult | null = null;
-let currentlyFetching: Promise<FetchTokenResult> | null = null;
-
-export async function getManagementToken(
-  config: GlobalAuthenticationConfig
-): Promise<string> {
-  if (cachedResult == null) {
-    if (currentlyFetching == null) {
-      currentlyFetching = fetchManagementToken(config);
-      cachedResult = await currentlyFetching;
-      currentlyFetching = null;
-      return cachedResult.accessToken;
-    } else {
-      const fetched = await currentlyFetching;
-      return fetched.accessToken;
-    }
-  }
-
-  if (cachedResult.expires > Date.now() + 60000) {
-    return cachedResult.accessToken;
-  } else {
-    cachedResult = null;
-    return getManagementToken(config);
-  }
 }

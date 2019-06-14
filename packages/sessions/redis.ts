@@ -22,10 +22,17 @@ export function createRedisClient(
     }, 5000);
   }
 
-  let healthy: boolean = false;
+  let healthy: boolean = true;
   function markHealthy() {
-    healthy = true;
-    healthyEventEmitter.emit("healthy");
+    if (unhealthyTimeout != null) {
+      clearTimeout(unhealthyTimeout);
+      unhealthyTimeout = null;
+    }
+
+    if (!healthy) {
+      healthy = true;
+      healthyEventEmitter.emit("healthy");
+    }
   }
 
   client.on("error", err => {

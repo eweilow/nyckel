@@ -4,5 +4,5 @@ export function concatUrl(origin: string, path: string) {
   const url = new URL(origin);
   url.pathname = path;
 
-  return url.href;
+  return new URL(url.href).href;
 }

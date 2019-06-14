@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`public API should be correct 1`] = `
+Object {
+  "getManagementToken": [Function],
+  "getManagementUserInfo": [Function],
+  "getManagementUserPermissions": [Function],
+  "getManagementUserRoles": [Function],
+}
+`;

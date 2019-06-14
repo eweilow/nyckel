@@ -20,7 +20,7 @@ function check(decoded: any, property: string, typeOf?: string) {
   }
   if (typeOf != null && typeof decoded[property] !== typeOf) {
     throw new Error(
-      `Expected decoded.${property} to be type ${typeOf}, but got${typeof decoded[
+      `Expected decoded.${property} to be type ${typeOf}, but got ${typeof decoded[
         property
       ]}`
     );
@@ -51,6 +51,14 @@ export async function getUserInfo(
 
   const body = await response.json();
 
+  check(body, "sub", "string");
+  check(body, "name", "string");
+  check(body, "nickname", "string");
+  check(body, "picture", "string");
+  check(body, "email", "string");
+  check(body, "email_verified", "boolean");
+  check(body, "updated_at", "string");
+
   const user: UserInfo = {
     sub: body.sub,
     name: body.name,
@@ -62,13 +70,5 @@ export async function getUserInfo(
     updatedAt: new Date(body.updated_at)
   };
 
-  check(user, "sub", "string");
-  check(user, "name", "string");
-  check(user, "nickname", "string");
-  check(user, "picture", "string");
-  check(user, "email", "string");
-  check(user, "emailVerified", "boolean");
-  check(user, "updatedAt");
-
-  return body;
+  return user;
 }

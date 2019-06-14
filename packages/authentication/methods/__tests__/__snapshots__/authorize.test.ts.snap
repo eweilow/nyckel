@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`authorizeUser returns correctly 1`] = `
+Object {
+  "csrfPair": Object {
+    "secret": "secret",
+    "token": "token",
+  },
+  "redirectTo": "url:authorization?response_type=code&client_id=param%3AclientId&redirect_uri=redirectUri&scope=scopeA%20scopeB%20openid%20profile%20email%20offline_access&state=token&audience=param%3Aaudience",
+}
+`;

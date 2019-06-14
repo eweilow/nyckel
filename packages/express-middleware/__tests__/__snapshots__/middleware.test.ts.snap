@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nyckelExpressMiddleware returns the correct router stack 1`] = `
+Array [
+  Object {
+    "path": null,
+    "regexp": /\\^\\\\/\\?\\(\\?=\\\\/\\|\\$\\)/i,
+  },
+  Object {
+    "path": "/auth/login",
+    "regexp": /\\^\\\\/auth\\\\/login\\\\/\\?\\$/i,
+  },
+  Object {
+    "path": "/auth/logout",
+    "regexp": /\\^\\\\/auth\\\\/logout\\\\/\\?\\$/i,
+  },
+  Object {
+    "path": "/auth/loggedout",
+    "regexp": /\\^\\\\/auth\\\\/loggedout\\\\/\\?\\$/i,
+  },
+  Object {
+    "path": "/auth/callback",
+    "regexp": /\\^\\\\/auth\\\\/callback\\\\/\\?\\$/i,
+  },
+]
+`;

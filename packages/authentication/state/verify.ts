@@ -8,7 +8,7 @@ export async function verifyCSRFPair(pair: CSRFPair) {
   if (!pair.token) {
     throw new Error("Missing CSRF pair token!");
   }
-  if (!csrfTokensSingleton.verify(pair.secret, pair.token)) {
+  if (csrfTokensSingleton.verify(pair.secret, pair.token) !== true) {
     throw new Error(
       "The provided CSRF pair was not valid (token does not match secret)"
     );

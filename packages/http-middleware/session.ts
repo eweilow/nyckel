@@ -28,7 +28,7 @@ export function enhanceRequestWithSession<T>(
       const id = cookie;
       if (sessions.isValidId(id)) {
         const value = await sessions.get(id);
-        if (value) {
+        if (value != null) {
           return value;
         }
       }

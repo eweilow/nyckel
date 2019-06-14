@@ -31,13 +31,24 @@ export type UserInRequest = {
   permissions(): Promise<any>;
 };
 
+function isExpired(
+  expires: number,
+  now: number = Date.now(),
+  margin: number = 10 * 60 * 1000 // Refreshing 10 minutes before token expires give ample time for multiple retries
+) {
+  return now >= expires - margin;
+}
+
+export { isExpired as isTokenExpired };
+
 export function enhanceRequestWithUser<T extends { session: SessionInRequest }>(
   request: T,
   cookieName: string,
   cookie: string,
   sessions: SessionManager,
   authConfig: GlobalAuthenticationConfig,
-  authManagementConfig: GlobalAuthenticationConfig
+  authManagementConfig: GlobalAuthenticationConfig,
+  expirationMargin: number = 10 * 60 * 1000
 ): T & { user: UserInRequest } {
   let enhancedRequest = request as T & { user: UserInRequest };
 
@@ -52,16 +63,11 @@ export function enhanceRequestWithUser<T extends { session: SessionInRequest }>(
       if (session == null) {
         return null;
       }
-
       if (session.accessToken == null) {
         return null;
       }
 
-      function isExpired(expires: number) {
-        return Date.now() > expires - 10 * 60 * 1000; // Refreshing 10 minutes before token expires give ample time for multiple retries
-      }
-
-      if (isExpired(session.expires)) {
+      if (isExpired(session.expires, Date.now(), expirationMargin)) {
         const lock = await sessions.lock(id, 5000);
         if (lock.acquired) {
           try {

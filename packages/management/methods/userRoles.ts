@@ -1,7 +1,7 @@
 import { GlobalAuthenticationConfig, concatUrl } from "@nyckel/authentication";
 import { managementRateLimiter } from "./limiter";
-import { getManagementToken } from "./token";
 import fetch from "node-fetch";
+import { getManagementToken } from "../token";
 
 export async function getManagementUserRoles(
   id: string,
@@ -25,5 +25,11 @@ export async function getManagementUserRoles(
     return getManagementUserRoles(id, config);
   }
 
-  return response.json();
+  const json = await response.json();
+
+  if ("error" in json) {
+    throw new Error(json.error + ": " + json.error_description);
+  }
+
+  return json;
 }

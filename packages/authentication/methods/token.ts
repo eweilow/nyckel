@@ -19,7 +19,7 @@ type ErrorResponseTokenBody = {
 
 function verifyTokenResponse(
   response: RequestTokenBody
-): response is ValidResponseTokenBody {
+): ValidResponseTokenBody {
   if ("error" in response) {
     throw new Error(response.error + ": " + response.error_description);
   }
@@ -27,13 +27,16 @@ function verifyTokenResponse(
     throw new Error("Expected access_token to exist");
   }
   if (response.id_token == null) {
-    throw new Error("Expected access_token to exist");
+    throw new Error("Expected id_token to exist");
   }
   if (response.expires_in == null) {
     throw new Error("Expected expires_in to exist");
   }
+  if (response.refresh_token == null) {
+    throw new Error("Expected refresh_token to exist");
+  }
 
-  return true;
+  return response;
 }
 
 export async function requestToken(
@@ -58,25 +61,25 @@ export async function requestToken(
 
   const body: RequestTokenBody = await response.json();
 
-  if (!verifyTokenResponse(body)) {
-    throw new Error("Unable to verify token response");
-  }
+  const verifiedBody = verifyTokenResponse(body);
 
   let decodedIdToken!: DecodedJWT;
   let decodedAccessToken: DecodedJWT | null = null;
   let expiresUtcSeconds = Number.MAX_VALUE;
   try {
-    decodedIdToken = await verifyAndDecodeJWT(body.id_token, config);
-    if (decodedIdToken.exp < expiresUtcSeconds) {
-      expiresUtcSeconds = decodedIdToken.exp;
-    }
+    decodedIdToken = await verifyAndDecodeJWT(verifiedBody.id_token, config);
+    expiresUtcSeconds = decodedIdToken.exp;
   } catch (idTokenError) {
     idTokenError.message += " (id token)";
     throw idTokenError;
   }
   if (config.audience !== config.urls.userinfo) {
+    // if configurated audience matches the Auth0 userinfo scope, the access token will not be a JWT
     try {
-      decodedAccessToken = await verifyAndDecodeJWT(body.access_token, config);
+      decodedAccessToken = await verifyAndDecodeJWT(
+        verifiedBody.access_token,
+        config
+      );
       if (decodedAccessToken.exp < expiresUtcSeconds) {
         expiresUtcSeconds = decodedAccessToken.exp;
       }
@@ -88,9 +91,9 @@ export async function requestToken(
 
   const expiresUtcMilliseconds = expiresUtcSeconds * 1000;
   return {
-    refreshToken: body.refresh_token,
-    accessToken: body.access_token,
-    idToken: body.id_token,
+    refreshToken: verifiedBody.refresh_token,
+    accessToken: verifiedBody.access_token,
+    idToken: verifiedBody.id_token,
     expires: expiresUtcMilliseconds
   };
 }

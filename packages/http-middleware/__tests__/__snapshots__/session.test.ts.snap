@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`enhanceRequestWithSession should enhance a request correctly 1`] = `
+Object {
+  "delete": [Function],
+  "get": [Function],
+  "set": [Function],
+}
+`;

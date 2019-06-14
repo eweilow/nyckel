@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getManagementUserPermissions should fail if error 1`] = `
+Array [
+  Array [
+    "param:authorizationDomain",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer token",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getManagementUserPermissions should fail if error 2`] = `"oh no: something bad happened"`;
+
+exports[`getManagementUserPermissions should re-attempt if rate limited 1`] = `
+Array [
+  Array [
+    "param:authorizationDomain",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer token",
+      },
+    },
+  ],
+  Array [
+    "param:authorizationDomain",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer token",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getManagementUserPermissions should return correctly 1`] = `
+Array [
+  Array [
+    "param:authorizationDomain",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer token",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getManagementUserPermissions should return correctly 2`] = `
+Object {
+  "data": "data",
+}
+`;
+
+exports[`getManagementUserPermissions should update rate limiting correctly 1`] = `
+Array [
+  Array [
+    "param:authorizationDomain",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer token",
+      },
+    },
+  ],
+]
+`;
+
+exports[`getManagementUserPermissions should wait for rate limiting correctly 1`] = `
+Array [
+  Array [
+    "param:authorizationDomain",
+    Object {
+      "headers": Object {
+        "Authorization": "Bearer token",
+      },
+    },
+  ],
+]
+`;

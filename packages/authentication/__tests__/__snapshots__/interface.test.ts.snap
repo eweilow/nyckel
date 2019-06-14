@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`public API should be correct 1`] = `
+Object {
+  "attemptToRefreshToken": [Function],
+  "authorizeUser": [Function],
+  "concatUrl": [Function],
+  "createGlobalAuthenticationConfig": [Function],
+  "createRateLimiter": [Function],
+  "decodeJWT": [Function],
+  "getSafeHostname": [Function],
+  "getUserInfo": [Function],
+  "logoutUser": [Function],
+  "requestToken": [Function],
+  "verifyAndDecodeJWT": [Function],
+  "verifyCSRFPair": [Function],
+}
+`;

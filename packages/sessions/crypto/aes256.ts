@@ -30,13 +30,15 @@ const rawTextEncoding = "utf8";
 const encryptionEncoding = "base64";
 const cipherType = "aes-256-ctr";
 
+function validateIsString(name: string, value: string) {
+  if (typeof value !== "string" || !value) {
+    throw new TypeError(`Provided '${name}' must be a non-empty string`);
+  }
+}
+
 export function encrypt(key: string, plaintext: string) {
-  if (typeof key !== "string" || !key) {
-    throw new TypeError('Provided "key" must be a non-empty string');
-  }
-  if (typeof plaintext !== "string" || !plaintext) {
-    throw new TypeError('Provided "plaintext" must be a non-empty string');
-  }
+  validateIsString("key", key);
+  validateIsString("plaintext", plaintext);
 
   var sha256 = crypto.createHash("sha256");
   sha256.update(key);
@@ -54,12 +56,8 @@ export function encrypt(key: string, plaintext: string) {
 }
 
 export function decrypt(key: string, encrypted: string) {
-  if (typeof key !== "string" || !key) {
-    throw new TypeError('Provided "key" must be a non-empty string');
-  }
-  if (typeof encrypted !== "string" || !encrypted) {
-    throw new TypeError('Provided "encrypted" must be a non-empty string');
-  }
+  validateIsString("key", key);
+  validateIsString("encrypted", encrypted);
 
   var sha256 = crypto.createHash("sha256");
   sha256.update(key);

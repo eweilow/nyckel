@@ -1,35 +1,32 @@
 {
-  "exclude": ["**"],
-  "references": [
-    {
-      "path": "packages/authentication/tsconfig.cjs.json"
-    },
-    {
-      "path": "packages/authentication/tsconfig.esm.json"
-    },
-    {
-      "path": "packages/sessions/tsconfig.cjs.json"
-    },
-    {
-      "path": "packages/sessions/tsconfig.esm.json"
-    },
-    {
-      "path": "packages/management/tsconfig.cjs.json"
-    },
-    {
-      "path": "packages/management/tsconfig.esm.json"
-    },
-    {
-      "path": "packages/express-middleware/tsconfig.cjs.json"
-    },
-    {
-      "path": "packages/express-middleware/tsconfig.esm.json"
-    },
-    {
-      "path": "packages/http-middleware/tsconfig.cjs.json"
-    },
-    {
-      "path": "packages/http-middleware/tsconfig.esm.json"
-    }
+  "compilerOptions": {
+    "target": "esnext",
+    "jsx": "react",
+    "lib": ["dom", "es2015", "es2017", "esnext.asynciterable"],
+    "composite": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "stripInternal": true,
+    "strictBindCallApply": true
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/node_modules/**",
+    "**/*.d.ts",
+    "*.d.ts"
   ]
 }

@@ -1,55 +1,8 @@
 import { GlobalAuthenticationConfig } from "../utils/globalConfig";
-import { verify } from "jsonwebtoken";
-import jwksClient from "jwks-rsa";
 import LRU from "lru-cache";
+import { Verifier } from "./verifier";
 
-class Verifier {
-  constructor(private jwksUri: string, private issuer: string) {}
-
-  private client = jwksClient({
-    jwksUri: this.jwksUri
-  });
-
-  private getKey = (
-    header: { kid: string },
-    callback: (err: Error | null, signingKey?: string) => void
-  ) => {
-    this.client.getSigningKey(header.kid, (err, key) => {
-      if (err != null) {
-        return callback(err);
-      }
-
-      const signingKey = key.publicKey || key.rsaPublicKey;
-      if (signingKey == null) {
-        return callback(new Error("signingKey cannot be null or undefined"));
-      }
-
-      callback(null, signingKey);
-    });
-  };
-
-  async verifyJWT(token: string) {
-    const decoded = await new Promise<DecodedJWT>((resolve, reject) => {
-      verify(
-        token,
-        this.getKey as any,
-        {
-          issuer: this.issuer
-        },
-        (err, decoded) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(decoded as any);
-        }
-      );
-    });
-
-    return decoded;
-  }
-}
-
-const verifierCache = new LRU<string, Verifier>({
+export const verifierCache = new LRU<string, Verifier>({
   max: 10,
   maxAge: 7 * 24 * 60 * 60 * 1000 // A week
 });
