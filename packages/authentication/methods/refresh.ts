@@ -1,5 +1,5 @@
 import { GlobalAuthenticationConfig } from "..";
-import { verifyAndDecodeJWT, DecodedJWT } from "../jwt/verify";
+import { verifyAndDecodeJWT, DecodedAccessToken } from "../jwt/verify";
 import fetch from "node-fetch";
 
 type RequestTokenBody = ValidResponseTokenBody | ErrorResponseTokenBody;
@@ -60,8 +60,8 @@ export async function attemptToRefreshToken(
 
   const verifiedBody = verifyTokenResponse(body);
 
-  let decodedIdToken!: DecodedJWT;
-  let decodedAccessToken: DecodedJWT | null = null;
+  let decodedIdToken!: DecodedAccessToken;
+  let decodedAccessToken: DecodedAccessToken | null = null;
   let expiresUtcSeconds = Number.MAX_VALUE;
   try {
     decodedIdToken = await verifyAndDecodeJWT(verifiedBody.id_token, config);

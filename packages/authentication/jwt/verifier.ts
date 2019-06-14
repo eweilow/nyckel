@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
-import { DecodedJWT } from "./verify";
+import { DecodedAccessToken } from "./verify";
 
 export class Verifier {
   constructor(private jwksUri: string, private issuer: string) {}
@@ -28,7 +28,7 @@ export class Verifier {
   };
 
   async verifyJWT(token: string) {
-    return new Promise<DecodedJWT>((resolve, reject) => {
+    return new Promise<DecodedAccessToken>((resolve, reject) => {
       verify(
         token,
         this.getKey as any,

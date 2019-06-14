@@ -1,6 +1,10 @@
 export { decodeJWT } from "./jwt/decode";
 
-export { verifyAndDecodeJWT, DecodedJWT } from "./jwt/verify";
+export {
+  verifyAndDecodeJWT,
+  DecodedAccessToken,
+  DecodedIdToken
+} from "./jwt/verify";
 
 export { createRateLimiter } from "./utils/rateLimiter";
 

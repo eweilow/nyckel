@@ -1,6 +1,6 @@
 import { decode } from "jsonwebtoken";
-import { DecodedJWT } from "./verify";
+import { DecodedAccessToken } from "./verify";
 
-export function decodeJWT(jwt: string): DecodedJWT {
-  return decode(jwt) as DecodedJWT;
+export function decodeJWT<T extends DecodedAccessToken>(jwt: string): T {
+  return decode(jwt) as T;
 }

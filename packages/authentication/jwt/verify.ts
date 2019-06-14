@@ -7,13 +7,20 @@ export const verifierCache = new LRU<string, Verifier>({
   maxAge: 7 * 24 * 60 * 60 * 1000 // A week
 });
 
-export type DecodedJWT = {
+export type DecodedAccessToken = {
   exp: number;
   iss: string;
   aud: string[];
   sub?: string;
   iat?: string;
   scope?: string;
+};
+
+export type DecodedIdToken = DecodedAccessToken & {
+  name: string;
+  nickname: string;
+  picture: string;
+  email: string;
 };
 
 export async function verifyAndDecodeJWT(

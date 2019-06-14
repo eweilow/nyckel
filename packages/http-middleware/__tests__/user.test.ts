@@ -109,11 +109,14 @@ describe("enhanceRequestWithUser", () => {
   });
 
   describe(".get", () => {
+    it.todo("validates idTokenData");
+    it.todo("validates accessTokenData");
+
     it("should return null if cookie is invalid", async () => {
       const cookie = "invalid";
 
       const sessions: SessionManager = {
-        client: {} as any,
+        redisClient: {} as any,
         delete: jest.fn(),
         get: jest.fn(),
         has: jest.fn(),
@@ -142,7 +145,7 @@ describe("enhanceRequestWithUser", () => {
       const cookie = "valid";
 
       const sessions: SessionManager = {
-        client: {} as any,
+        redisClient: {} as any,
         delete: jest.fn(),
         get: jest.fn(async () => null),
         has: jest.fn(),
@@ -173,7 +176,7 @@ describe("enhanceRequestWithUser", () => {
       const cookie = "valid";
 
       const sessions: SessionManager = {
-        client: {} as any,
+        redisClient: {} as any,
         delete: jest.fn(),
         get: jest.fn(async () => ({} as any)),
         has: jest.fn(),
@@ -214,7 +217,7 @@ describe("enhanceRequestWithUser", () => {
 
         const lockRelease = jest.fn();
         const sessions: SessionManager = {
-          client: {} as any,
+          redisClient: {} as any,
           delete: jest.fn(),
           get: jest.fn(async () => session),
           has: jest.fn(),
@@ -282,7 +285,7 @@ describe("enhanceRequestWithUser", () => {
 
         const lockRelease = jest.fn();
         const sessions: SessionManager = {
-          client: {} as any,
+          redisClient: {} as any,
           delete: jest.fn(),
           get: jest.fn(async () => session),
           has: jest.fn(),
@@ -337,7 +340,7 @@ describe("enhanceRequestWithUser", () => {
 
       const lockRelease = jest.fn();
       const sessions: SessionManager = {
-        client: {} as any,
+        redisClient: {} as any,
         delete: jest.fn(),
         get: jest.fn(async () => session),
         has: jest.fn(),
@@ -381,7 +384,7 @@ describe("enhanceRequestWithUser", () => {
 
     const lockRelease = jest.fn();
     const sessions: SessionManager = {
-      client: {} as any,
+      redisClient: {} as any,
       delete: jest.fn(),
       get: jest.fn(async () => session),
       has: jest.fn(),

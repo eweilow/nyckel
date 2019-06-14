@@ -3,7 +3,7 @@ import {
   GlobalAuthenticationConfig,
   getUserInfo,
   decodeJWT,
-  DecodedJWT
+  DecodedAccessToken
 } from "@nyckel/authentication";
 import { SessionManager } from "@nyckel/sessions";
 import {
@@ -13,12 +13,13 @@ import {
 } from "@nyckel/management";
 
 import { SessionInRequest } from "./session";
+import { DecodedIdToken } from "@nyckel/authentication/jwt/verify";
 
 export type UserInRequest = {
   get(): Promise<
     | ({
-        accessTokenData: DecodedJWT;
-        idTokenData: DecodedJWT;
+        accessTokenData: DecodedAccessToken;
+        idTokenData: DecodedIdToken;
         accessToken: string;
         idToken: string;
         expiresIn: number;
