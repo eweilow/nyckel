@@ -6,7 +6,9 @@
   "scripts": {
     "build-ts": "tsc --build --pretty tsconfig.compiler.json",
     "publish-prerelease": "lerna publish prerelease --dist-tag latest",
-    "test": "yarn jest --coverage"
+    "test": "yarn jest --coverage",
+    "check-changes": "(git diff --cached --exit-code || echo There are uncommitted changes. Cannot clean up) && git diff --cached --exit-code --quiet",
+    "clean": "yarn check-changes && git clean -i -d -x -e .env -e node_modules -e .jest"
   },
   "repository": {
     "type": "git",
