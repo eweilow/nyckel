@@ -10,7 +10,7 @@
     "@nyckel/authentication": "^0.0.1-alpha.0",
     "@nyckel/sessions": "^0.0.1-alpha.0",
     "dotenv": "8.0.0",
-    "ts-node": "8.2.0",
+    "ts-node": "8.3.0",
     "express": "4.17.1",
     "cookie-parser": "1.4.4"
   },

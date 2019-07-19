@@ -23,7 +23,7 @@
     "@nyckel/sessions": "^0.0.1-alpha.3"
   },
   "devDependencies": {
-    "@types/node": "12.0.7"
+    "@types/node": "12.6.8"
   },
   "keywords": [
     "nyckel"

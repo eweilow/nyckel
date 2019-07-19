@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@types/express": "4.17.0",
-    "@types/node": "12.0.7"
+    "@types/node": "12.6.8"
   },
   "keywords": [
     "nyckel"
