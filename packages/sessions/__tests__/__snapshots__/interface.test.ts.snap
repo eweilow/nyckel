@@ -2,6 +2,7 @@
 
 exports[`public API should be correct 1`] = `
 Object {
+  "SessionManager": undefined,
   "createSessionManager": [Function],
 }
 `;

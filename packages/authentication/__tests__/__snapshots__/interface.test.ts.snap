@@ -2,6 +2,11 @@
 
 exports[`public API should be correct 1`] = `
 Object {
+  "CSRFPair": undefined,
+  "DecodedAccessToken": undefined,
+  "DecodedIdToken": undefined,
+  "GlobalAuthenticationConfig": undefined,
+  "UserInfo": undefined,
   "attemptToRefreshToken": [Function],
   "authorizeUser": [Function],
   "concatUrl": [Function],
