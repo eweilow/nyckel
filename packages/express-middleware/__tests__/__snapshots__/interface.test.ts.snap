@@ -3,6 +3,7 @@
 exports[`public API should be correct 1`] = `
 Object {
   "asyncHandler": [Function],
+  "createCommonMiddleware": [Function],
   "nyckelExpressMiddleware": [Function],
 }
 `;
