@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/eweilow/nyckel.svg?branch=master)](https://travis-ci.org/eweilow/nyckel)
+[![Build Status](https://travis-ci.org/eweilow/nyckel.svg?branch=master)](https://travis-ci.org/eweilow/nyckel) [![Greenkeeper badge](https://badges.greenkeeper.io/eweilow/nyckel.svg)](https://greenkeeper.io/)
 
 # nyckel
 
