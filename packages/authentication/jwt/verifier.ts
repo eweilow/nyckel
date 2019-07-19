@@ -18,7 +18,7 @@ export class Verifier {
         return callback(err);
       }
 
-      const signingKey = key.publicKey || key.rsaPublicKey;
+      const signingKey = "publicKey" in key ? key.publicKey : key.rsaPublicKey;
       if (signingKey == null) {
         return callback(new Error("signingKey cannot be null or undefined"));
       }
