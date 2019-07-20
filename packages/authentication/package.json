@@ -1,6 +1,6 @@
 {
   "name": "@nyckel/authentication",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.6",
   "description": "A framework agnostic library for Auth0 authentication in hybrid web apps",
   "main": "./dist/cjs",
   "module": "./dist/esm",
