@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@nyckel/authentication": "^0.0.1-alpha.7",
-    "@types/jsonwebtoken": "8.3.2",
-    "@types/node": "12.6.8",
+    "@types/jsonwebtoken": "8.3.3",
+    "@types/node": "12.7.1",
     "@types/node-fetch": "2.5.0"
   },
   "peerDependencies": {
