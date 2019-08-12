@@ -22,7 +22,7 @@
     "@nyckel/http-middleware": "^0.0.1-alpha.7",
     "@nyckel/management": "^0.0.1-alpha.7",
     "@nyckel/sessions": "^0.0.1-alpha.6",
-    "express": "4.17.1"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/express": "4.17.0",
