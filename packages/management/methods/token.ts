@@ -2,35 +2,33 @@ import {
   GlobalAuthenticationConfig,
   concatUrl,
   createRateLimiter,
-  verifyAndDecodeJWT
+  verifyAndDecodeJWT,
+  verifyAPIResponse,
+  formatAPIValidationError
 } from "@nyckel/authentication";
 
 import fetch from "node-fetch";
 
 const managementTokenRateLimiter = createRateLimiter();
 
-type RequestTokenBody = ValidResponseTokenBody | ErrorResponseTokenBody;
-
-type ValidResponseTokenBody = {
+type ResponseTokenBody = {
   access_token: string;
   token_type: "Bearer";
 };
 
-type ErrorResponseTokenBody = {
-  error: string;
-  error_description: string;
-};
-
-function verifyTokenResponse(
-  response: RequestTokenBody
-): ValidResponseTokenBody {
-  if ("error" in response) {
-    throw new Error(response.error + ": " + response.error_description);
-  }
+function verifyTokenResponse(response: ResponseTokenBody) {
   if (response.access_token == null) {
-    throw new Error("Expected access_token to exist");
+    throw new Error(formatAPIValidationError("expected access_token to exist"));
   }
-  return response;
+  if (response.token_type !== "Bearer") {
+    throw new Error(
+      formatAPIValidationError(
+        "expected token_type to be 'Bearer', but got '" +
+          response.token_type +
+          "'"
+      )
+    );
+  }
 }
 
 type FetchTokenResult = {
@@ -43,6 +41,12 @@ const tokenId = "token";
 export async function fetchManagementToken(
   config: GlobalAuthenticationConfig
 ): Promise<FetchTokenResult> {
+  if (process.env.NODE_ENV !== "production") {
+    console.info(
+      "[nyckel] fetching management token from " + config.urls.token
+    );
+  }
+
   await managementTokenRateLimiter.wait(tokenId);
   const response = await fetch(config.urls.token, {
     method: "POST",
@@ -61,8 +65,13 @@ export async function fetchManagementToken(
     return fetchManagementToken(config);
   }
 
-  const body: RequestTokenBody = await response.json();
-  const verifiedBody = verifyTokenResponse(body);
+  const body: any = await response.json();
+  const verifiedBody = verifyAPIResponse<ResponseTokenBody>(
+    response.status,
+    body,
+    config.urls.token
+  );
+  verifyTokenResponse(verifiedBody);
 
   const data = await verifyAndDecodeJWT(verifiedBody.access_token, config);
 

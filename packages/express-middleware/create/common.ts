@@ -7,7 +7,8 @@ import {
 import { NyckelExpressMiddlewareOptions } from "../middleware";
 
 export function createCommonMiddleware(
-  opts: NyckelExpressMiddlewareOptions
+  opts: NyckelExpressMiddlewareOptions,
+  expirationMargin: number = 10 * 60 * 1000
 ): RequestHandler {
   const {
     cookieName,
@@ -48,7 +49,8 @@ export function createCommonMiddleware(
       cookie,
       sessionManager,
       authConfig,
-      authManagementConfig
+      authManagementConfig,
+      expirationMargin
     );
 
     next();

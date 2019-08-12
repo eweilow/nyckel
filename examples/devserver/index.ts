@@ -39,14 +39,17 @@ const sessionManager = createSessionManager(
   }
 );
 
-const authMiddleware = nyckelExpressMiddleware({
-  cookieName: process.env.COOKIE_NAME!,
-  secureCookies: false,
-  sessionManager,
-  trustProxyFn: app.get("trust proxy fn"),
-  authConfig,
-  authManagementConfig
-});
+const authMiddleware = nyckelExpressMiddleware(
+  {
+    cookieName: process.env.COOKIE_NAME!,
+    secureCookies: false,
+    sessionManager,
+    trustProxyFn: app.get("trust proxy fn"),
+    authConfig,
+    authManagementConfig
+  },
+  60
+);
 
 app.use(authMiddleware);
 
@@ -82,6 +85,7 @@ app.get(
   "/",
   asyncHandler(async (req, res, next) => {
     res.write("<a href='/info'>info</a><br>");
+    res.write("<a href='/management'>management</a><br>");
 
     const user = await req.user.get();
     if (user != null) {
@@ -126,4 +130,4 @@ app.get(
   })
 );
 
-app.listen(8080);
+app.listen(8000);

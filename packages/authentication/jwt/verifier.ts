@@ -20,7 +20,9 @@ export class Verifier {
 
       const signingKey = "publicKey" in key ? key.publicKey : key.rsaPublicKey;
       if (signingKey == null) {
-        return callback(new Error("signingKey cannot be null or undefined"));
+        return callback(
+          new Error("{nyckel] signingKey cannot be null or undefined")
+        );
       }
 
       callback(null, signingKey);

@@ -1,10 +1,10 @@
 import { GlobalAuthenticationConfig } from "../utils/globalConfig";
 import fetch from "node-fetch";
 import { verifyAndDecodeJWT, DecodedAccessToken } from "../jwt/verify";
+import { verifyAPIResponse } from "../utils/validateResponse";
+import { formatAPIValidationError } from "../utils/formatError";
 
-type RequestTokenBody = ValidResponseTokenBody | ErrorResponseTokenBody;
-
-type ValidResponseTokenBody = {
+type RequestTokenBody = {
   access_token: string;
   refresh_token: string;
   id_token: string;
@@ -12,31 +12,30 @@ type ValidResponseTokenBody = {
   expires_in: number;
 };
 
-type ErrorResponseTokenBody = {
-  error: string;
-  error_description: string;
-};
-
-function verifyTokenResponse(
-  response: RequestTokenBody
-): ValidResponseTokenBody {
-  if ("error" in response) {
-    throw new Error(response.error + ": " + response.error_description);
-  }
+function verifyTokenResponse(response: RequestTokenBody) {
   if (response.access_token == null) {
-    throw new Error("Expected access_token to exist");
+    throw new Error(formatAPIValidationError("expected access_token to exist"));
   }
   if (response.id_token == null) {
-    throw new Error("Expected id_token to exist");
+    throw new Error(formatAPIValidationError("expected id_token to exist"));
+  }
+  if (response.token_type !== "Bearer") {
+    throw new Error(
+      formatAPIValidationError(
+        "expected token_type to be 'Bearer', but got '" +
+          response.token_type +
+          "'"
+      )
+    );
   }
   if (response.expires_in == null) {
-    throw new Error("Expected expires_in to exist");
+    throw new Error(formatAPIValidationError("expected expires_in to exist"));
   }
   if (response.refresh_token == null) {
-    throw new Error("Expected refresh_token to exist");
+    throw new Error(
+      formatAPIValidationError("expected refresh_token to exist")
+    );
   }
-
-  return response;
 }
 
 export async function requestToken(
@@ -44,10 +43,11 @@ export async function requestToken(
   redirectUrl: string,
   config: GlobalAuthenticationConfig
 ) {
-  const url = new URL(config.urls.token);
-  const sendPostTo = url.href;
+  if (process.env.NODE_ENV !== "production") {
+    console.info("[nyckel] requesting a token at " + config.urls.token);
+  }
 
-  const response = await fetch(sendPostTo, {
+  const response = await fetch(config.urls.token, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
@@ -59,9 +59,14 @@ export async function requestToken(
     })
   });
 
-  const body: RequestTokenBody = await response.json();
+  const json = await response.json();
+  const verifiedBody = verifyAPIResponse(
+    response.status,
+    json,
+    config.urls.token
+  );
 
-  const verifiedBody = verifyTokenResponse(body);
+  verifyTokenResponse(verifiedBody);
 
   let decodedIdToken!: DecodedAccessToken;
   let decodedAccessToken: DecodedAccessToken | null = null;
