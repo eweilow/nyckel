@@ -54,7 +54,8 @@ describe("fetchManagementToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
-          access_token: "access_token"
+          access_token: "access_token",
+          token_type: "Bearer"
         };
       })
     };
@@ -76,7 +77,8 @@ describe("fetchManagementToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
-          access_token: "access_token"
+          access_token: "access_token",
+          token_type: "Bearer"
         };
       })
     };
@@ -108,7 +110,8 @@ describe("fetchManagementToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
-          access_token: "access_token"
+          access_token: "access_token",
+          token_type: "Bearer"
         };
       })
     };
@@ -165,7 +168,31 @@ describe("fetchManagementToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
-          data: "bogus"
+          data: "bogus",
+          token_type: "Bearer"
+        };
+      })
+    };
+    ((fetch as any) as jest.Mock).mockReturnValueOnce(
+      Promise.resolve(fetchResponse)
+    );
+
+    const promise = fetchManagementToken(config);
+    await expect(promise).rejects.toThrow();
+    const err = await promise.catch(err => err);
+
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
+    expect(fetch).toBeCalledTimes(1);
+    expect(err.message).toMatchSnapshot();
+  });
+
+  it("should fail if bearer type was not Bearer", async () => {
+    const fetchResponse = {
+      status: 200,
+      json: jest.fn(() => {
+        return {
+          access_token: "token",
+          token_type: "not bearer"
         };
       })
     };
@@ -187,7 +214,8 @@ describe("fetchManagementToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
-          access_token: "token"
+          access_token: "token",
+          token_type: "Bearer"
         };
       })
     };

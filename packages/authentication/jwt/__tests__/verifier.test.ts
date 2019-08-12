@@ -135,7 +135,7 @@ describe("Verifier", () => {
         err ? reject(err) : resolve(key)
       );
     });
-    expect(getSigningKey).toBeCalledWith("kid", expect.any(Function));
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(getSigningKey).toBeCalledWith("kid", expect.any(Function));
   });
 });

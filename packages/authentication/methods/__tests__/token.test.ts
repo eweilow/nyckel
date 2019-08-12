@@ -17,6 +17,20 @@ jest.mock("../../jwt/verify", () => {
   };
 });
 
+jest.mock("../../utils/rateLimiter", () => {
+  const instance = {
+    rateLimiter: {
+      wait: jest.fn(),
+      updateFromResponse: jest.fn()
+    },
+    createRateLimiter: jest.fn(() => {
+      return instance.rateLimiter;
+    })
+  };
+
+  return instance;
+});
+
 const config: GlobalAuthenticationConfig = {
   audience: "param:audience",
   authorizationDomain: "param:authorizationDomain",
@@ -52,8 +66,30 @@ describe("requestToken", () => {
     );
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
+  });
+
+  it("should fail if token_type was not Bearer", async () => {
+    const fetchResponse = {
+      status: 200,
+      json: jest.fn(() => {
+        return {
+          token_type: "not bearer",
+          refresh_token: "refresh_token",
+          access_token: "access_token",
+          id_token: "id_token",
+          expires_in: 1000
+        };
+      })
+    };
+    ((fetch as any) as jest.Mock).mockReturnValueOnce(
+      Promise.resolve(fetchResponse)
+    );
+
+    const promise = requestToken("code", "redirectUrl", config);
+    await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 
   it("should fail if refresh_token was not returned", async () => {
@@ -61,6 +97,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: undefined,
           access_token: "access_token",
           id_token: "id_token",
@@ -73,8 +110,8 @@ describe("requestToken", () => {
     );
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 
   it("should fail if access_token was not returned", async () => {
@@ -82,6 +119,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: undefined,
           id_token: "id_token",
@@ -94,8 +132,8 @@ describe("requestToken", () => {
     );
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 
   it("should fail if id_token was not returned", async () => {
@@ -103,6 +141,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: undefined,
@@ -115,8 +154,8 @@ describe("requestToken", () => {
     );
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 
   it("should fail if expires_in was not returned", async () => {
@@ -124,6 +163,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -136,8 +176,8 @@ describe("requestToken", () => {
     );
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 
   it("should return correctly", async () => {
@@ -145,6 +185,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -166,6 +207,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -202,6 +244,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -238,6 +281,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -273,6 +317,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -296,8 +341,8 @@ describe("requestToken", () => {
     });
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 
   it("should throw if access_token cannot be decoded", async () => {
@@ -305,6 +350,7 @@ describe("requestToken", () => {
       status: 200,
       json: jest.fn(() => {
         return {
+          token_type: "Bearer",
           refresh_token: "refresh_token",
           access_token: "access_token",
           id_token: "id_token",
@@ -328,7 +374,7 @@ describe("requestToken", () => {
     });
 
     const promise = requestToken("code", "redirectUrl", config);
-    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
     await expect(promise).rejects.toThrowErrorMatchingSnapshot();
+    expect(((fetch as any) as jest.Mock).mock.calls).toMatchSnapshot();
   });
 });
