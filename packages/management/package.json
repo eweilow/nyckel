@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/eweilow/nyckel",
   "dependencies": {
-    "jsonwebtoken": "8.5.1",
-    "jwks-rsa": "1.6.0",
-    "node-fetch": "2.6.0"
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.6.0",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "@nyckel/authentication": "^0.0.1-alpha.7",
