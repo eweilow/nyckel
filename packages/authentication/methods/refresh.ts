@@ -1,39 +1,39 @@
 import { GlobalAuthenticationConfig } from "..";
 import { verifyAndDecodeJWT, DecodedAccessToken } from "../jwt/verify";
 import fetch from "node-fetch";
+import { verifyAPIResponse } from "../utils/validateResponse";
+import { formatAPIValidationError } from "../utils/formatError";
+import { createRateLimiter } from "../utils/rateLimiter";
 
-type RequestTokenBody = ValidResponseTokenBody | ErrorResponseTokenBody;
-
-type ValidResponseTokenBody = {
+type RequestTokenBody = {
   access_token: string;
   id_token: string;
   token_type: "Bearer";
   expires_in: number;
 };
 
-function verifyTokenResponse(
-  response: RequestTokenBody
-): ValidResponseTokenBody {
-  if ("error" in response) {
-    throw new Error(response.error + ": " + response.error_description);
-  }
+function verifyTokenResponse(response: RequestTokenBody) {
   if (response.access_token == null) {
-    throw new Error("Expected access_token to exist");
+    throw new Error(formatAPIValidationError("expected access_token to exist"));
   }
   if (response.id_token == null) {
-    throw new Error("Expected access_token to exist");
+    throw new Error(formatAPIValidationError("expected access_token to exist"));
   }
   if (response.expires_in == null) {
-    throw new Error("Expected expires_in to exist");
+    throw new Error(formatAPIValidationError("expected expires_in to exist"));
   }
-
-  return response;
+  if (response.token_type !== "Bearer") {
+    throw new Error(
+      formatAPIValidationError(
+        "expected token_type to be 'Bearer', but got '" +
+          response.token_type +
+          "'"
+      )
+    );
+  }
 }
 
-export type ErrorResponseTokenBody = {
-  error: string;
-  error_description: string;
-};
+const refreshRateLimiter = createRateLimiter();
 
 export async function attemptToRefreshToken(
   session: {
@@ -45,6 +45,15 @@ export async function attemptToRefreshToken(
   idToken: string;
   expires: number;
 }> {
+  await refreshRateLimiter.wait(session.refreshToken);
+
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    console.info("[Nyckel] refreshing a token at " + config.urls.token);
+  }
+
   const response = await fetch(config.urls.token, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -56,9 +65,20 @@ export async function attemptToRefreshToken(
     })
   });
 
-  const body: RequestTokenBody = await response.json();
+  refreshRateLimiter.updateFromResponse(session.refreshToken, response);
 
-  const verifiedBody = verifyTokenResponse(body);
+  if (response.status === 429) {
+    return attemptToRefreshToken(session, config);
+  }
+
+  const json = await response.json();
+  const verifiedBody = verifyAPIResponse(
+    response.status,
+    json,
+    config.urls.token
+  );
+
+  verifyTokenResponse(verifiedBody);
 
   let decodedIdToken!: DecodedAccessToken;
   let decodedAccessToken: DecodedAccessToken | null = null;

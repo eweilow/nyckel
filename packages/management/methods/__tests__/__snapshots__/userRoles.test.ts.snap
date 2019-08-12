@@ -13,7 +13,7 @@ Array [
 ]
 `;
 
-exports[`getManagementUserRoles should fail if error 2`] = `"oh no: something bad happened"`;
+exports[`getManagementUserRoles should fail if error 2`] = `"[Nyckel] Encountered an Auth0 API error on 'param:authorizationDomain': oh no, something bad happened"`;
 
 exports[`getManagementUserRoles should re-attempt if rate limited 1`] = `
 Array [

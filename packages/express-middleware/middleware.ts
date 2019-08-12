@@ -34,11 +34,12 @@ export type NyckelExpressMiddlewareOptions = {
 };
 
 export const nyckelExpressMiddleware = (
-  opts: NyckelExpressMiddlewareOptions
+  opts: NyckelExpressMiddlewareOptions,
+  expirationMargin: number = 10 * 60 * 1000
 ): express.Router => {
   const router = express.Router();
 
-  router.use(createCommonMiddleware(opts));
+  router.use(createCommonMiddleware(opts, expirationMargin));
   router.get("/auth/login", createLoginHandler(opts));
   router.get("/auth/logout", createLogoutHandler(opts));
   router.get("/auth/loggedout", createLoggedOutHandler(opts));

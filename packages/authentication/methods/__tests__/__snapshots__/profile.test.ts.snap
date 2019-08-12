@@ -28,6 +28,14 @@ exports[`getUserInfo fail on missing data throws if updated_at is an invalid typ
 
 exports[`getUserInfo fail on missing data throws if updated_at is missing from body 1`] = `"Expected decoded userinfo to have property 'updated_at'"`;
 
+exports[`getUserInfo logs to console.info 1`] = `
+Array [
+  Array [
+    "[Nyckel] requesting userinfo at url:userinfo",
+  ],
+]
+`;
+
 exports[`getUserInfo should fail if error 1`] = `
 Array [
   Array [
@@ -41,7 +49,7 @@ Array [
 ]
 `;
 
-exports[`getUserInfo should fail if error 2`] = `"Expected decoded userinfo to have property 'sub'"`;
+exports[`getUserInfo should fail if error 2`] = `"[Nyckel] Encountered an Auth0 API error on 'url:userinfo': oh no, something bad happened"`;
 
 exports[`getUserInfo should re-attempt if rate limited 1`] = `
 Array [

@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Verifier rejects getKey properly when getSigningKey returns no keys 1`] = `"signingKey cannot be null or undefined"`;
+exports[`Verifier rejects getKey properly when getSigningKey returns no keys 1`] = `"[Nyckel] signingKey cannot be null or undefined"`;

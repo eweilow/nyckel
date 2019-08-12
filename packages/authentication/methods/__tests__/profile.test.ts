@@ -207,4 +207,27 @@ describe("getUserInfo", () => {
 
     expect(data.updatedAt).toBeInstanceOf(Date);
   });
+
+  it("logs to console.info", async () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
+
+    const spy = jest.spyOn(console, "info").mockImplementation(() => {});
+
+    const fetchResponse = {
+      status: 200,
+      json: jest.fn(() => {
+        return baseData;
+      })
+    };
+    ((fetch as any) as jest.Mock).mockReturnValueOnce(
+      Promise.resolve(fetchResponse)
+    );
+
+    await getUserInfo("accessToken", config);
+
+    expect(spy.mock.calls).toMatchSnapshot();
+    spy.mockRestore();
+    process.env.NODE_ENV = original;
+  });
 });

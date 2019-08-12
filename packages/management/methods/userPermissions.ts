@@ -1,4 +1,8 @@
-import { GlobalAuthenticationConfig, concatUrl } from "@nyckel/authentication";
+import {
+  GlobalAuthenticationConfig,
+  concatUrl,
+  verifyAPIResponse
+} from "@nyckel/authentication";
 import { managementRateLimiter } from "./limiter";
 import fetch from "node-fetch";
 import { getManagementToken } from "../token";
@@ -27,9 +31,9 @@ export async function getManagementUserPermissions(
 
   const json = await response.json();
 
-  if ("error" in json) {
-    throw new Error(json.error + ": " + json.error_description);
-  }
-
-  return json;
+  return verifyAPIResponse(
+    response.status,
+    json,
+    concatUrl(config.authorizationDomain, "/api/v2/users/<id>/permissions")
+  );
 }

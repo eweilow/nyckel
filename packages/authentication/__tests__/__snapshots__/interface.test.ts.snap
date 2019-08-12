@@ -13,10 +13,13 @@ Object {
   "createGlobalAuthenticationConfig": [Function],
   "createRateLimiter": [Function],
   "decodeJWT": [Function],
+  "formatAPIError": [Function],
+  "formatAPIValidationError": [Function],
   "getSafeHostname": [Function],
   "getUserInfo": [Function],
   "logoutUser": [Function],
   "requestToken": [Function],
+  "verifyAPIResponse": [Function],
   "verifyAndDecodeJWT": [Function],
   "verifyCSRFPair": [Function],
 }

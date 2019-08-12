@@ -2,6 +2,7 @@ import { GlobalAuthenticationConfig } from "../utils/globalConfig";
 import fetch from "node-fetch";
 import { createRateLimiter } from "../utils/rateLimiter";
 import { decodeJWT } from "../jwt/decode";
+import { verifyAPIResponse } from "../utils/validateResponse";
 
 export type UserInfo = {
   sub: string;
@@ -37,6 +38,13 @@ export async function getUserInfo(
 
   await userInfoRateLimiter.wait(sub!);
 
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    console.info("[Nyckel] requesting userinfo at " + config.urls.userinfo);
+  }
+
   const response = await fetch(config.urls.userinfo, {
     headers: {
       Authorization: `Bearer ${accessToken}`
@@ -49,7 +57,8 @@ export async function getUserInfo(
     return getUserInfo(accessToken, config);
   }
 
-  const body = await response.json();
+  const json = await response.json();
+  const body = verifyAPIResponse(response.status, json, config.urls.userinfo);
 
   check(body, "sub", "string");
   check(body, "name", "string");

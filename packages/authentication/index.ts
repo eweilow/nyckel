@@ -24,3 +24,6 @@ export { authorizeUser } from "./methods/authorize";
 export { requestToken } from "./methods/token";
 export { getUserInfo, UserInfo } from "./methods/profile";
 export { attemptToRefreshToken } from "./methods/refresh";
+
+export * from "./utils/formatError";
+export * from "./utils/validateResponse";

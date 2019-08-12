@@ -59,7 +59,7 @@ describe("nyckelExpressMiddleware", () => {
       "createCommonMiddleware:createLogoutHandler"
     );
 
-    expect(createCommonMiddleware).toBeCalledWith(opts);
+    expect(createCommonMiddleware).toBeCalledWith(opts, 600000);
     expect(createLoginHandler).toBeCalledWith(opts);
     expect(createCallbackHandler).toBeCalledWith(opts);
     expect(createLoggedOutHandler).toBeCalledWith(opts);

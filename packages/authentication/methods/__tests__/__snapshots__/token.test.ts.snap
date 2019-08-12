@@ -1,6 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`requestToken should fail if access_token was not returned 1`] = `
+exports[`requestToken logs to console.info 1`] = `
+Array [
+  Array [
+    "[Nyckel] requesting a token at url:token",
+  ],
+]
+`;
+
+exports[`requestToken should fail if access_token was not returned 1`] = `"[Nyckel] Encountered a validation error: expected access_token to exist"`;
+
+exports[`requestToken should fail if access_token was not returned 2`] = `
 Array [
   Array [
     "url:token",
@@ -15,9 +25,9 @@ Array [
 ]
 `;
 
-exports[`requestToken should fail if access_token was not returned 2`] = `"Expected access_token to exist"`;
+exports[`requestToken should fail if error 1`] = `"[Nyckel] Encountered an Auth0 API error on 'url:token': oh no, something bad happened"`;
 
-exports[`requestToken should fail if error 1`] = `
+exports[`requestToken should fail if error 2`] = `
 Array [
   Array [
     "url:token",
@@ -32,9 +42,9 @@ Array [
 ]
 `;
 
-exports[`requestToken should fail if error 2`] = `"oh no: something bad happened"`;
+exports[`requestToken should fail if expires_in was not returned 1`] = `"[Nyckel] Encountered a validation error: expected expires_in to exist"`;
 
-exports[`requestToken should fail if expires_in was not returned 1`] = `
+exports[`requestToken should fail if expires_in was not returned 2`] = `
 Array [
   Array [
     "url:token",
@@ -49,9 +59,9 @@ Array [
 ]
 `;
 
-exports[`requestToken should fail if expires_in was not returned 2`] = `"Expected expires_in to exist"`;
+exports[`requestToken should fail if id_token was not returned 1`] = `"[Nyckel] Encountered a validation error: expected id_token to exist"`;
 
-exports[`requestToken should fail if id_token was not returned 1`] = `
+exports[`requestToken should fail if id_token was not returned 2`] = `
 Array [
   Array [
     "url:token",
@@ -66,9 +76,9 @@ Array [
 ]
 `;
 
-exports[`requestToken should fail if id_token was not returned 2`] = `"Expected id_token to exist"`;
+exports[`requestToken should fail if refresh_token was not returned 1`] = `"[Nyckel] Encountered a validation error: expected refresh_token to exist"`;
 
-exports[`requestToken should fail if refresh_token was not returned 1`] = `
+exports[`requestToken should fail if refresh_token was not returned 2`] = `
 Array [
   Array [
     "url:token",
@@ -83,7 +93,22 @@ Array [
 ]
 `;
 
-exports[`requestToken should fail if refresh_token was not returned 2`] = `"Expected refresh_token to exist"`;
+exports[`requestToken should fail if token_type was not Bearer 1`] = `"[Nyckel] Encountered a validation error: expected token_type to be 'Bearer', but got 'not bearer'"`;
+
+exports[`requestToken should fail if token_type was not Bearer 2`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"authorization_code\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"code\\":\\"code\\",\\"redirect_uri\\":\\"redirectUrl\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
 
 exports[`requestToken should return correctly 1`] = `
 Array [
@@ -157,7 +182,9 @@ Object {
 }
 `;
 
-exports[`requestToken should throw if access_token cannot be decoded 1`] = `
+exports[`requestToken should throw if access_token cannot be decoded 1`] = `"Error (access token)"`;
+
+exports[`requestToken should throw if access_token cannot be decoded 2`] = `
 Array [
   Array [
     "url:token",
@@ -172,9 +199,9 @@ Array [
 ]
 `;
 
-exports[`requestToken should throw if access_token cannot be decoded 2`] = `"Error (access token)"`;
+exports[`requestToken should throw if id_token cannot be decoded 1`] = `"Error (id token)"`;
 
-exports[`requestToken should throw if id_token cannot be decoded 1`] = `
+exports[`requestToken should throw if id_token cannot be decoded 2`] = `
 Array [
   Array [
     "url:token",
@@ -188,5 +215,3 @@ Array [
   ],
 ]
 `;
-
-exports[`requestToken should throw if id_token cannot be decoded 2`] = `"Error (id token)"`;

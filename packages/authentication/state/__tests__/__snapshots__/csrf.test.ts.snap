@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`verifyCSRFPair throws if unable to verify 1`] = `"The provided CSRF pair was not valid (token does not match secret)"`;
+exports[`verifyCSRFPair throws if unable to verify 1`] = `"[Nyckel] Encountered a validation error: the provided CSRF pair was not valid (token does not match secret)"`;
 
-exports[`verifyCSRFPair throws on missing secret 1`] = `"Missing CSRF pair secret!"`;
+exports[`verifyCSRFPair throws on missing secret 1`] = `"[Nyckel] Encountered a validation error: missing CSRF pair secret!"`;
 
-exports[`verifyCSRFPair throws on missing token 1`] = `"Missing CSRF pair token!"`;
+exports[`verifyCSRFPair throws on missing token 1`] = `"[Nyckel] Encountered a validation error: missing CSRF pair token!"`;
