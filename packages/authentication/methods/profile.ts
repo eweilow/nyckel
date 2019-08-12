@@ -38,8 +38,11 @@ export async function getUserInfo(
 
   await userInfoRateLimiter.wait(sub!);
 
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[nyckel] requesting userinfo at " + config.urls.userinfo);
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    console.info("[Nyckel] requesting userinfo at " + config.urls.userinfo);
   }
 
   const response = await fetch(config.urls.userinfo, {

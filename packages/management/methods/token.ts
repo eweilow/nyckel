@@ -41,9 +41,12 @@ const tokenId = "token";
 export async function fetchManagementToken(
   config: GlobalAuthenticationConfig
 ): Promise<FetchTokenResult> {
-  if (process.env.NODE_ENV !== "production") {
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== "test"
+  ) {
     console.info(
-      "[nyckel] fetching management token from " + config.urls.token
+      "[Nyckel] fetching management token from " + config.urls.token
     );
   }
 

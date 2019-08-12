@@ -43,8 +43,11 @@ export async function requestToken(
   redirectUrl: string,
   config: GlobalAuthenticationConfig
 ) {
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[nyckel] requesting a token at " + config.urls.token);
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    console.info("[Nyckel] requesting a token at " + config.urls.token);
   }
 
   const response = await fetch(config.urls.token, {

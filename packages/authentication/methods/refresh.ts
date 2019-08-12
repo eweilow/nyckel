@@ -47,8 +47,11 @@ export async function attemptToRefreshToken(
 }> {
   await refreshRateLimiter.wait(session.refreshToken);
 
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[nyckel] refreshing a token at " + config.urls.token);
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    console.info("[Nyckel] refreshing a token at " + config.urls.token);
   }
 
   const response = await fetch(config.urls.token, {
