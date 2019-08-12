@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`requestToken logs to console.info 1`] = `
+Array [
+  Array [
+    "[Nyckel] requesting a token at url:token",
+  ],
+]
+`;
+
 exports[`requestToken should fail if access_token was not returned 1`] = `"[Nyckel] Encountered a validation error: expected access_token to exist"`;
 
 exports[`requestToken should fail if access_token was not returned 2`] = `

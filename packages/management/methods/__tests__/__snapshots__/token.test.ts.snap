@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`fetchManagementToken logs to console.info 1`] = `
+Array [
+  Array [
+    "[Nyckel] fetching management token from url:token",
+  ],
+]
+`;
+
 exports[`fetchManagementToken should fail if access token was not returned 1`] = `
 Array [
   Array [

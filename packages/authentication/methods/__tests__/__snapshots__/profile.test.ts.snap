@@ -28,6 +28,14 @@ exports[`getUserInfo fail on missing data throws if updated_at is an invalid typ
 
 exports[`getUserInfo fail on missing data throws if updated_at is missing from body 1`] = `"Expected decoded userinfo to have property 'updated_at'"`;
 
+exports[`getUserInfo logs to console.info 1`] = `
+Array [
+  Array [
+    "[Nyckel] requesting userinfo at url:userinfo",
+  ],
+]
+`;
+
 exports[`getUserInfo should fail if error 1`] = `
 Array [
   Array [
