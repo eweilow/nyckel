@@ -15,7 +15,24 @@ Array [
 ]
 `;
 
-exports[`fetchManagementToken should fail if access token was not returned 2`] = `"Expected access_token to exist"`;
+exports[`fetchManagementToken should fail if access token was not returned 2`] = `"[Nyckel] Encountered a validation error: expected access_token to exist"`;
+
+exports[`fetchManagementToken should fail if bearer type was not Bearer 1`] = `
+Array [
+  Array [
+    "url:token",
+    Object {
+      "body": "{\\"grant_type\\":\\"client_credentials\\",\\"client_id\\":\\"param:clientId\\",\\"client_secret\\":\\"param:clientSecret\\",\\"audience\\":\\"param:authorizationDomain\\"}",
+      "headers": Object {
+        "content-type": "application/json",
+      },
+      "method": "POST",
+    },
+  ],
+]
+`;
+
+exports[`fetchManagementToken should fail if bearer type was not Bearer 2`] = `"[Nyckel] Encountered a validation error: expected token_type to be 'Bearer', but got 'not bearer'"`;
 
 exports[`fetchManagementToken should fail if error 1`] = `
 Array [
@@ -32,7 +49,7 @@ Array [
 ]
 `;
 
-exports[`fetchManagementToken should fail if error 2`] = `"oh no: something bad happened"`;
+exports[`fetchManagementToken should fail if error 2`] = `"[Nyckel] Encountered an Auth0 API error on 'url:token': oh no, something bad happened"`;
 
 exports[`fetchManagementToken should re-attempt if rate limited 1`] = `
 Array [

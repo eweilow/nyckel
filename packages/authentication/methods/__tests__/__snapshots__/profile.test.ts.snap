@@ -41,7 +41,7 @@ Array [
 ]
 `;
 
-exports[`getUserInfo should fail if error 2`] = `"Expected decoded userinfo to have property 'sub'"`;
+exports[`getUserInfo should fail if error 2`] = `"[Nyckel] Encountered an Auth0 API error on 'url:userinfo': oh no, something bad happened"`;
 
 exports[`getUserInfo should re-attempt if rate limited 1`] = `
 Array [
