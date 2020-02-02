@@ -19,8 +19,7 @@
   "homepage": "https://github.com/eweilow/nyckel",
   "version": "0.0.1-alpha.9",
   "scripts": {
-    "test": "jest",
-    "typescript": "tsc --incremental"
+    "test": "jest"
   },
   "dependencies": {
     "@nyckel/authentication": "^0.0.1-alpha.8",
