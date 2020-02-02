@@ -1,6 +1,6 @@
 {
   "name": "@nyckel/http-middleware",
-  "version": "0.0.1-alpha.11",
+  "version": "0.0.1-alpha.14",
   "description": "The module of Nyckel that enhances HTTP requests with Nyckel authentication handling",
   "main": "./dist/cjs",
   "module": "./dist/esm",
