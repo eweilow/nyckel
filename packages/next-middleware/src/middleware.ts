@@ -17,6 +17,7 @@ import { TLSSocket } from "tls";
 
 import { parse as parseCookies, serialize } from "cookie";
 import { AuthConfig } from "./config";
+import { readHeader } from "./readHeader";
 
 function singleHeaderValue(val?: string | string[]) {
   if (!val) {
@@ -44,7 +45,7 @@ function getProtocol(req: IncomingMessage, isTrusted: (ip?: string) => boolean) 
 
   return {
     protocol,
-    proxyProtocol: singleHeaderValue(req.headers["X-Forwarded-Proto"])
+    proxyProtocol: singleHeaderValue(readHeader(req, "X-Forwarded-Proto"))
   };
 }
 
@@ -104,7 +105,7 @@ export async function handleAuth(
   const { protocol, proxyProtocol } = getProtocol(req, trustProxyFn);
   const actualProtocol = proxyProtocol ?? protocol;
 
-  const hostAtProxy = singleHeaderValue(req.headers["X-Forwarded-Host"]);
+  const hostAtProxy = singleHeaderValue(readHeader(req, "X-Forwarded-Host"));
   const realHost = getSafeHostname(
     actualProtocol,
     // req.url.,
