@@ -17,7 +17,7 @@
     "url": "https://github.com/eweilow/nyckel/issues"
   },
   "homepage": "https://github.com/eweilow/nyckel",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha.9",
   "scripts": {
     "test": "jest",
     "typescript": "tsc --incremental"
