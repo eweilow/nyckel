@@ -30,6 +30,12 @@
     },
     {
       "path": "packages/http-middleware/tsconfig.esm.json"
+    },
+    {
+      "path": "packages/next-middleware/tsconfig.cjs.json"
+    },
+    {
+      "path": "packages/next-middleware/tsconfig.esm.json"
     }
   ]
 }

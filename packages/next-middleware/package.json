@@ -1,0 +1,41 @@
+{
+  "name": "@nyckel/next-middleware",
+  "description": "The module of Nyckel that abstracts away auth in Next.js applications",
+  "main": "./dist/cjs",
+  "module": "./dist/esm",
+  "types": "./",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eweilow/nyckel.git"
+  },
+  "author": "eweilow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eweilow/nyckel/issues"
+  },
+  "homepage": "https://github.com/eweilow/nyckel",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest",
+    "typescript": "tsc --incremental"
+  },
+  "dependencies": {
+    "@nyckel/authentication": "^0.0.1-alpha.8",
+    "@nyckel/http-middleware": "^0.0.1-alpha.8",
+    "@nyckel/sessions": "^0.0.1-alpha.8",
+    "cookie": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.5.1",
+    "next": "^9.2.2-canary.3"
+  },
+  "peerDependencies": {
+    "next": "*"
+  },
+  "keywords": [
+    "nyckel"
+  ]
+}
