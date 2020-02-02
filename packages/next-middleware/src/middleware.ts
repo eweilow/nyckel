@@ -44,7 +44,7 @@ function getProtocol(req: IncomingMessage, isTrusted: (ip?: string) => boolean) 
 
   return {
     protocol,
-    proxyProtocol: singleHeaderValue(req.headers["X-Forwarded-Host"])
+    proxyProtocol: singleHeaderValue(req.headers["X-Forwarded-Proto"])
   };
 }
 
