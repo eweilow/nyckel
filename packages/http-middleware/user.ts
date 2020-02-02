@@ -73,6 +73,33 @@ export function enhanceRequestWithUser<T extends { session: SessionInRequest }>(
         if (lock.acquired) {
           try {
             const refreshed = await attemptToRefreshToken(session, authConfig);
+
+            if (
+              process.env.NODE_ENV !== "production" &&
+              process.env.NODE_ENV !== "test"
+            ) {
+              const idTokenData = decodeJWT(session.idToken);
+              const accessTokenData = decodeJWT(session.accessToken);
+
+              if (
+                isExpired(idTokenData.exp * 1000, Date.now(), expirationMargin)
+              ) {
+                console.info(
+                  "[nyckel] the returned id token has an expiration below the current expirationMargin. This will result in always refreshing the token"
+                );
+              }
+              if (
+                isExpired(
+                  accessTokenData.exp * 1000,
+                  Date.now(),
+                  expirationMargin
+                )
+              ) {
+                console.info(
+                  "[nyckel] the returned access token has an expiration below the current expirationMargin. This will result in always refreshing the token"
+                );
+              }
+            }
             session = {
               ...session,
               ...refreshed
