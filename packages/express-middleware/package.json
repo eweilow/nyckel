@@ -1,6 +1,6 @@
 {
   "name": "@nyckel/express-middleware",
-  "version": "0.0.1-alpha.8",
+  "version": "0.0.1-alpha.11",
   "description": "The module of Nyckel that enhances Express with Nyckel authentication handling",
   "main": "./dist/cjs",
   "module": "./dist/esm",
@@ -18,10 +18,10 @@
   },
   "homepage": "https://github.com/eweilow/nyckel",
   "dependencies": {
-    "@nyckel/authentication": "^0.0.1-alpha.8",
-    "@nyckel/http-middleware": "^0.0.1-alpha.8",
-    "@nyckel/management": "^0.0.1-alpha.8",
-    "@nyckel/sessions": "^0.0.1-alpha.8",
+    "@nyckel/authentication": "^0.0.1-alpha.11",
+    "@nyckel/http-middleware": "^0.0.1-alpha.11",
+    "@nyckel/management": "^0.0.1-alpha.11",
+    "@nyckel/sessions": "^0.0.1-alpha.11",
     "express": "^4.17.1"
   },
   "devDependencies": {

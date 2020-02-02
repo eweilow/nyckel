@@ -1,6 +1,6 @@
 {
   "name": "@nyckel/management",
-  "version": "0.0.1-alpha.8",
+  "version": "0.0.1-alpha.11",
   "description": "The module of Nyckel that provides access to user data",
   "main": "./dist/cjs",
   "module": "./dist/esm",
@@ -23,7 +23,7 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@nyckel/authentication": "^0.0.1-alpha.8",
+    "@nyckel/authentication": "^0.0.1-alpha.11",
     "@types/jsonwebtoken": "8.3.3",
     "@types/node": "12.7.1",
     "@types/node-fetch": "2.5.0"
