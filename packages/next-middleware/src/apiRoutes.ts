@@ -6,7 +6,9 @@ import {
   startLoginMethod
 } from ".";
 import { NextApiRequest, NextApiResponse } from "next";
-import { AuthConfig } from "./config";
+
+import { AuthConfig } from "@nyckel/service-middleware";
+
 export const callbackRoute = (authConfig: AuthConfig) =>
   async function callbackRoute(req: NextApiRequest, res: NextApiResponse) {
     const auth = await handleAuth(req, res, authConfig);

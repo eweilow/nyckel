@@ -1,6 +1,6 @@
 import { redirectResponse } from "../util";
 import { concatUrl } from "@nyckel/authentication";
-import { AuthState } from "../middleware";
+import { AuthState } from "@nyckel/service-middleware";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export async function loggedOutMethod(

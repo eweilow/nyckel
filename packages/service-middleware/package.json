@@ -1,6 +1,6 @@
 {
-  "name": "@nyckel/next-middleware",
-  "description": "The module of Nyckel that abstracts away auth in Next.js applications",
+  "name": "@nyckel/service-middleware",
+  "description": "The module of Nyckel that abstracts away auth in Node server applications",
   "main": "./dist/cjs",
   "module": "./dist/esm",
   "types": "./",
@@ -23,14 +23,13 @@
   },
   "dependencies": {
     "@nyckel/authentication": "^0.0.1-alpha.11",
-    "@nyckel/service-middleware": "^0.0.1-alpha.14"
+    "@nyckel/http-middleware": "^0.0.1-alpha.14",
+    "@nyckel/sessions": "^0.0.1-alpha.11",
+    "cookie": "^0.4.0"
   },
   "devDependencies": {
-    "@types/node": "^13.5.1",
-    "next": "^9.2.2-canary.3"
-  },
-  "peerDependencies": {
-    "next": "*"
+    "@types/cookie": "^0.3.3",
+    "@types/node": "^13.5.1"
   },
   "keywords": [
     "nyckel"
