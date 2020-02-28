@@ -12,7 +12,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 export async function callbackMethod(
   req: NextApiRequest,
   res: NextApiResponse,
-  auth: AuthState
+  auth: AuthState,
+  callbackPath = "/api/callback",
+  redirectPath = "/"
 ) {
   if (!req.query.state) {
     throw new Error("Expected query to contain state!");
@@ -38,10 +40,10 @@ export async function callbackMethod(
 
   const data = await requestToken(
     req.query.code as string,
-    concatUrl(auth.host.actual, "/api/callback"),
+    concatUrl(auth.host.actual, callbackPath),
     auth.config
   );
   await auth.session.set(data);
 
-  redirectResponse(res, concatUrl(auth.host.actual, "/"), false);
+  redirectResponse(res, concatUrl(auth.host.actual, redirectPath), false);
 }

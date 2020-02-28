@@ -6,10 +6,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 export async function logoutMethod(
   req: NextApiRequest,
   res: NextApiResponse,
-  auth: AuthState
+  auth: AuthState,
+  logoutPath = "/api/loggedout"
 ) {
   const { redirectTo } = await logoutUser(
-    concatUrl(auth.host.actual, "/api/loggedout"),
+    concatUrl(auth.host.actual, logoutPath),
     auth.config
   );
   redirectResponse(res, redirectTo, false);

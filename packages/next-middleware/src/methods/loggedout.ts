@@ -6,8 +6,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 export async function loggedOutMethod(
   req: NextApiRequest,
   res: NextApiResponse,
-  auth: AuthState
+  auth: AuthState,
+  redirectPath = "/"
 ) {
   await auth.session.delete();
-  redirectResponse(res, concatUrl(auth.host.actual, "/"), false);
+  redirectResponse(res, concatUrl(auth.host.actual, redirectPath), false);
 }
