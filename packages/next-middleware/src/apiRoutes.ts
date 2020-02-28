@@ -12,27 +12,39 @@ import { AuthConfig } from "@nyckel/service-middleware";
 export const callbackRoute = (authConfig: AuthConfig) =>
   async function callbackRoute(req: NextApiRequest, res: NextApiResponse) {
     const auth = await handleAuth(req, res, authConfig);
-    await callbackMethod(req, res, auth);
+    await callbackMethod(
+      req,
+      res,
+      auth,
+      authConfig.callbackPath,
+      authConfig.successfulRedirectPath
+    );
     res.end();
   };
 
 export const loggedOutRoute = (authConfig: AuthConfig) =>
   async function loggedOutRoute(req: NextApiRequest, res: NextApiResponse) {
     const auth = await handleAuth(req, res, authConfig);
-    await loggedOutMethod(req, res, auth);
+    await loggedOutMethod(req, res, auth, authConfig.loggedOutRedirectPath);
     res.end();
   };
 
 export const startLoginRoute = (authConfig: AuthConfig) =>
   async function startLoginRoute(req: NextApiRequest, res: NextApiResponse) {
     const auth = await handleAuth(req, res, authConfig);
-    await startLoginMethod(req, res, auth);
+    await startLoginMethod(
+      req,
+      res,
+      auth,
+      authConfig.callbackPath,
+      authConfig.successfulRedirectPath
+    );
     res.end();
   };
 
 export const logoutRoute = (authConfig: AuthConfig) =>
   async function logoutRoute(req: NextApiRequest, res: NextApiResponse) {
     const auth = await handleAuth(req, res, authConfig);
-    await logoutMethod(req, res, auth);
+    await logoutMethod(req, res, auth, authConfig.loggedOutPath);
     res.end();
   };

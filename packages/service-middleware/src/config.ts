@@ -9,6 +9,10 @@ export type AuthConfig = {
   sessionSecret: string;
   cookieName: string;
   trustProxyFn?: (ip?: string) => boolean;
+  callbackPath?: string;
+  successfulRedirectPath?: string;
+  loggedOutRedirectPath?: string;
+  loggedOutPath?: string;
 };
 
 export function createAuthConfig(cb: () => AuthConfig) {
