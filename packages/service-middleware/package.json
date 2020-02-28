@@ -17,7 +17,7 @@
     "url": "https://github.com/eweilow/nyckel/issues"
   },
   "homepage": "https://github.com/eweilow/nyckel",
-  "version": "0.0.1-alpha.15",
+  "version": "0.0.1-alpha.17",
   "scripts": {
     "test": "jest"
   },
