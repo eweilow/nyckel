@@ -8,6 +8,7 @@ export type AuthConfig = {
   sessionSalt: string;
   sessionSecret: string;
   cookieName: string;
+  redisUrl: string;
   trustProxyFn?: (ip?: string) => boolean;
   callbackPath?: string;
   successfulRedirectPath?: string;

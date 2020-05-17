@@ -67,7 +67,7 @@ function createAuthSingletons(config: AuthConfig) {
   );
 
   const sessionManager = createSessionManager(
-    process.env.REDIS_URL!,
+    config.redisUrl,
     err => console.error(err),
     {
       salt: config.sessionSalt,
