@@ -17,13 +17,13 @@
     "url": "https://github.com/eweilow/nyckel/issues"
   },
   "homepage": "https://github.com/eweilow/nyckel",
-  "version": "0.0.1-alpha.17",
+  "version": "0.0.1-alpha.18",
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
     "@nyckel/authentication": "^0.0.1-alpha.11",
-    "@nyckel/service-middleware": "^0.0.1-alpha.17"
+    "@nyckel/service-middleware": "^0.0.1-alpha.18"
   },
   "devDependencies": {
     "@types/node": "^13.5.1",
