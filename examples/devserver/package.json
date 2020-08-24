@@ -12,7 +12,7 @@
     "cookie-parser": "1.4.4",
     "dotenv": "8.0.0",
     "express": "4.17.1",
-    "ts-node": "8.3.0"
+    "ts-node": "9.0.0"
   },
   "scripts": {
     "start": "ts-node index.ts"
