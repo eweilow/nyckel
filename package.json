@@ -31,7 +31,7 @@
   "homepage": "https://github.com/eweilow/nyckel#readme",
   "devDependencies": {
     "@eweilow/ts-jest-fork": "24.0.1-test",
-    "@types/jest": "24.0.17",
+    "@types/jest": "25.2.3",
     "@types/supertest": "2.0.8",
     "jest": "24.8.0",
     "lerna": "3.16.4",
