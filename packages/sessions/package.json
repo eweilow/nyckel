@@ -26,7 +26,7 @@
   "devDependencies": {
     "@types/node": "12.7.1",
     "@types/redis": "2.8.13",
-    "@types/redlock": "3.0.4",
+    "@types/redlock": "4.0.1",
     "@types/uuid": "3.4.5"
   },
   "keywords": [
