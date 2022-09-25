@@ -24,10 +24,10 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@types/node": "12.7.1",
-    "@types/redis": "2.8.13",
-    "@types/redlock": "3.0.4",
-    "@types/uuid": "3.4.5"
+    "@types/node": "12.20.55",
+    "@types/redis": "2.8.32",
+    "@types/redlock": "3.0.7",
+    "@types/uuid": "3.4.10"
   },
   "keywords": [
     "nyckel"
