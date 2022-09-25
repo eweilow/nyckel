@@ -25,7 +25,7 @@
     "@nyckel/authentication": "^0.0.1-alpha.11",
     "@nyckel/http-middleware": "^0.0.1-alpha.14",
     "@nyckel/sessions": "^0.0.1-alpha.11",
-    "cookie": "^0.4.0"
+    "cookie": "^0.5.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.3.3",
